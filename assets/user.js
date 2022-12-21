@@ -3,8 +3,8 @@ import { ClipPath, Defs, G, Path, Rect, Svg } from "react-native-svg";
 const User = (props) => {
   return (
     <Svg
-      width="150"
-      height="150"
+      // width="150"
+      // height="150"
       viewBox="0 0 150 150"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

@@ -33,6 +33,8 @@ const CreateProfile = props => {
             left: 0,
             top: -80,
             alignSelf: 'center',
+            width:150,
+            height:150
           }}
         />
         {/* <Image source={{uri: '../../assets/user.js'}} style={{

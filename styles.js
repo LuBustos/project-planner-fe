@@ -1,21 +1,31 @@
 'use strict';
 import {StyleSheet} from 'react-native';
+import {boxShadow, textStyle} from './mixin';
 
 const styles = StyleSheet.create({
   input: {
     width: 324,
     height: 50,
     // backgroundColor: '#ffffff',
-    shadowColor: '#000000',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.05,
-    elevation: 5,
+    ...boxShadow(),
     borderRadius: 20,
     margin: 10,
+  },
+  cards: {
+    backgroundColor: '#FFFFFF',
+    ...boxShadow(4, 4),
+    borderRadius: 10,
+    width: 336,
+    height: 70,
+    margin: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  textCards: {
+    ...textStyle('500', 13, 20),
+    letterSpacing: 1,
+    padding: 10,
   },
   form: {
     margin: 10,
@@ -25,18 +35,10 @@ const styles = StyleSheet.create({
   },
   button: {
     // backgroundColor: '#67a9ef',
-    shadowColor: '#000000',
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.17,
-    shadowRadius: 3.05,
-    elevation: 4,
+    ...boxShadow(8, 4, 0.17),
     borderRadius: 25.1953,
     height: 53,
     width: 220,
-    borderRadius: 25.1953125,
     marginBottom: 23,
   },
   textButton: {
@@ -45,10 +47,7 @@ const styles = StyleSheet.create({
     right: '15.45%',
     top: '30.19%',
     bottom: '30.19%',
-    fontStyle: 'normal',
-    fontWeight: '700',
-    fontSize: 15.1172,
-    lineHeight: 23,
+    ...textStyle('700', 15.1172, 23),
     textAlign: 'center',
     // color: "#FFFFFF"
   },
@@ -63,37 +62,25 @@ const styles = StyleSheet.create({
     right: '7.44%',
     top: '16.59%',
     bottom: '70.01%',
-    fontStyle: 'normal',
-    fontWeight: '800',
-    fontSize: 36,
-    lineHeight: 54,
-    // color: '#FFFFFF',
+    ...textStyle('800', 36, 54),
     letterSpacing: 4,
   },
   icon_text: {
-    fontStyle: "normal",
-    fontWeight: "400",
-    fontSize: 14,
-    lineHeight: 21,
-
-    // textAlign: "center",
+    ...textStyle('400', 14, 21),
     letterSpacing: 1,
-
-    color: '#67A9EF',
+    color: '#67A9EF', //check
+  },
+  placeholder_text: {
+    fontStyle: 'normal',
+    ...textStyle('300', 14, 21),
+    letterSpacing: 1,
+    color: '#BDBDBD',
   },
   second_title: {
     position: 'absolute',
-    // left: '21.03%',
     top: '17.39%',
-    // bottom: '10.21%',
-    fontStyle: 'normal',
-    fontWeight: '800',
-    fontSize: 36,
-    lineHeight: 54,
-    // // color: '#FFFFFF',
+    ...textStyle('800', 36, 54),
     letterSpacing: 4,
-    // justifyContent: 'center',
-    // alignItems: 'center'
     alignSelf: 'center',
   },
   subtitle: {
@@ -102,10 +89,7 @@ const styles = StyleSheet.create({
     right: '60.77%',
     top: '13.86%',
     bottom: '82.94%',
-    fontStyle: 'normal',
-    fontWeight: '600',
-    fontSize: 18,
-    lineHeight: 27,
+    ...textStyle('600', 18, 27),
     // color: '#FFFFFF',
   },
 });
