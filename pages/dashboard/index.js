@@ -1,4 +1,11 @@
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {
+  FlatList,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Header from '../../components/header';
 import {useTheme} from '@react-navigation/native';
 import {useState} from 'react';
@@ -6,12 +13,14 @@ import {TextBox} from '../../components/';
 // import {textStyle} from '../../styles.js';
 import {textStyle} from '../../mixin';
 import EmptyMessage from '../../components/empty';
+import Icon from 'react-native-vector-icons/FontAwesome.js';
 
 const styles = StyleSheet.create({
   title: {
     ...textStyle('600', 18, 27),
     letterSpacing: 1,
-    marginLeft: 10
+    marginLeft: 27,
+    marginBottom: 23,
     // color: '#FFFFFF',
   },
 });
@@ -70,13 +79,29 @@ const Dashboard = () => {
             return <EmptyMessage />; //Call Icon empty
           }}
           ListHeaderComponent={() => {
-            return (
-              tasks.length > 0 ? <Text style={{...styles.title, color: colors.backgroundButton}}>
+            return tasks.length > 0 ? (
+              <Text style={{...styles.title, color: colors.backgroundButton}}>
                 Mine opgaver
-              </Text> : null
-            );
+              </Text>
+            ) : null;
           }}
         />
+        <TouchableOpacity>
+          <Icon
+            name={'plus-circle'}
+            style={{
+              color: '#67A9EF',
+              top: 10,
+              left: '75%',
+            }}
+            size={80}
+          />
+        </TouchableOpacity>
+        {/* <Modal animationType="slide" visible={true}>
+            <View>
+                <Text>Holi</Text>
+            </View>
+        </Modal> */}
       </View>
     </View>
   );
