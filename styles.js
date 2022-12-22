@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 27
+    marginLeft: 27,
   },
   textCards: {
     ...textStyle('500', 13, 20),

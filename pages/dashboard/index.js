@@ -1,6 +1,7 @@
 import {
   FlatList,
   Modal,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -14,6 +15,8 @@ import {TextBox} from '../../components/';
 import {textStyle} from '../../mixin';
 import EmptyMessage from '../../components/empty';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
+import ModalForm from '../../components/form';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const styles = StyleSheet.create({
   title: {
@@ -54,13 +57,52 @@ const mock_tasks = [
     destiny: [{}], //For people
     tags: [],
   },
+  {
+    id: 5,
+    title: 'Task 4',
+    description: 'Ops 4',
+    destiny: [{}], //For people
+    tags: [],
+  },
+  {
+    id: 6,
+    title: 'Task 4',
+    description: 'Ops 4',
+    destiny: [{}], //For people
+    tags: [],
+  },
+  {
+    id: 7,
+    title: 'Task 4',
+    description: 'Ops 4',
+    destiny: [{}], //For people
+    tags: [],
+  },
+  {
+    id: 8,
+    title: 'Task 4',
+    description: 'Ops 4',
+    destiny: [{}], //For people
+    tags: [],
+  },
 ];
 
 const Dashboard = () => {
   const {colors} = useTheme();
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(mock_tasks);
+  const [open, setOpen] = useState({open: false, update: false});
+
+  const createOrUpdateTask = (update = false) => {
+    console.log(update)
+    setOpen({open: true, update: update});
+  };
+
+  const closeModal = () => {
+    setOpen({open: false, update: false});
+  };
+
   return (
-    <View>
+    <View style={{flex: 1, height: '100%'}}>
       <Header
         header_style={{
           left: -55,
@@ -70,10 +112,14 @@ const Dashboard = () => {
         theme={colors}
         isProfile
       />
-      <View style={{marginTop: -250}}>
+      <View style={{flex: 1, marginTop: -250}}>
         <FlatList
           data={tasks}
-          renderItem={({item}) => <TextBox>{item.description}</TextBox>} //Call box
+          renderItem={({item}) => (
+            <TextBox onPress={() => createOrUpdateTask(true)}>
+              {item.description}
+            </TextBox>
+          )} //Call box
           keyExtractor={item => item.id}
           ListEmptyComponent={() => {
             return <EmptyMessage />; //Call Icon empty
@@ -86,23 +132,26 @@ const Dashboard = () => {
             ) : null;
           }}
         />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => createOrUpdateTask(false)}>
           <Icon
             name={'plus-circle'}
             style={{
+              position: 'absolute',
               color: '#67A9EF',
-              top: 10,
+              top: -110,
               left: '75%',
+              zIndex: 10,
             }}
             size={80}
           />
         </TouchableOpacity>
-        {/* <Modal animationType="slide" visible={true}>
-            <View>
-                <Text>Holi</Text>
-            </View>
-        </Modal> */}
       </View>
+      <ModalForm
+        visible={open.open}
+        update={open.update}
+        onClose={closeModal}
+        theme={colors}
+      />
     </View>
   );
 };
