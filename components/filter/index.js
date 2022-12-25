@@ -13,7 +13,7 @@ import FilterIcon from '../../assets/filter';
 import Loop from '../../assets/loop';
 import Button from '../button';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
-import { useState } from 'react';
+import {useState} from 'react';
 
 const styles_filter = StyleSheet.create({
   container: {
@@ -101,16 +101,15 @@ const FilterModal = ({visible, onClose, theme}) => {
 };
 
 const Filter = ({theme}) => {
-
-  const [open,setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const showFilterModal = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   const closeFilterModal = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   return (
     <View>
@@ -137,12 +136,14 @@ const Filter = ({theme}) => {
         }}
       />
       <TouchableOpacity onPress={showFilterModal}>
-        <FilterIcon
-          style={{
-            left: '82%',
-            top: -422,
-          }}
-        />
+        <View>
+          <FilterIcon
+            style={{
+              left: '82%',
+              top: -422,
+            }}
+          />
+        </View>
       </TouchableOpacity>
       <FilterModal visible={open} onClose={closeFilterModal} theme={theme} />
     </View>

@@ -4,11 +4,26 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import {textStyle} from '../../mixin';
 import Button from '../button';
 import {useEffect, useState} from 'react';
+import {useFields} from '../../hooks';
+import {
+  createTask,
+  getTaskById,
+  updateTask,
+  updateTaskStatus,
+} from '../../services/task.service';
+import Image from '../../assets/image';
+import Delete from '../../assets/delete';
+import Icon from 'react-native-vector-icons/FontAwesome.js';
+import DropDownPicker from 'react-native-dropdown-picker';
+import {getUsers} from '../../services/user.service';
+import User from '../../assets/user';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,9 +40,6 @@ const styles = StyleSheet.create({
   title: {
     ...textStyle('700', 20, 30),
     letterSpacing: 3,
-    textAlign: 'center',
-    marginTop: 56,
-    marginBottom: 37,
   },
   input: {
     borderColor: '#BDBDBD',
@@ -49,18 +61,17 @@ const styles = StyleSheet.create({
     '&focus': {
       color: 'red !important',
     },
-  }
+  },
 });
 
 const initial_form = {
   title: '',
   description: '',
-  users: '',
+  to: [],
   tags: '',
 };
 
-const InputForm = ({label, value, onChange,name}) => {
-  console.log(value)
+const InputForm = ({label, value, onChange, name}) => {
   return (
     <View>
       {value.length > 0 ? <Text style={styles.label}>{label}</Text> : null}
@@ -68,12 +79,71 @@ const InputForm = ({label, value, onChange,name}) => {
         onChangeText={text => onChange(name, text)}
         style={{...styles.input, height: 52}}
         placeholder={label}
+        value={value}
       />
     </View>
   );
 };
 
-const InputMultilineForm = ({label, value, onChange,name}) => {
+const SelectForm = ({
+  value,
+  label,
+  onChange,
+  name,
+  users,
+  setUsers,
+  owner,
+  setUserValue,
+  userValue,
+  open,
+  setOpen,
+}) => {
+  const [removedUsers, setRemovedUsers] = useState();
+
+  useEffect(() => {
+    onChange(name, userValue);
+  }, [userValue]);
+
+  return (
+    <>
+      {value.length > 0 ? <Text style={styles.label}>{label}</Text> : null}
+      <DropDownPicker
+        open={open}
+        value={userValue}
+        items={users}
+        setOpen={setOpen}
+        style={{...styles.input, height: 52}}
+        setValue={setUserValue}
+        setItems={setUsers}
+        multiple={true}
+        mode={'BADGE'}
+        autoScroll={true}
+        renderBadgeItem={props => {
+          const {IconComponent, label, value} = props;
+          return (
+            <View style={{margin: 5}} {...props}>
+              <IconComponent />
+              <Text>{owner !== value ? label : '(Mig)'}</Text>
+            </View>
+          );
+        }}
+        // onSelectItem={(props) => {
+        //   console.log("PROPS",props)
+        // }}
+        onChangeValue={(props) => {
+          console.log("VALUE",props)
+        }}
+        dropDownDirection="TOP"
+        dropDownContainerStyle={{
+          ...styles.input,
+        }}
+        // searchable={true}
+      />
+    </>
+  );
+};
+
+const InputMultilineForm = ({label, value, onChange, name}) => {
   return (
     <View>
       {value.length > 0 ? <Text style={styles.label}>{label}</Text> : null}
@@ -83,28 +153,122 @@ const InputMultilineForm = ({label, value, onChange,name}) => {
         multiline
         numberOfLines={4}
         onChangeText={text => onChange(name, text)}
+        value={value}
       />
     </View>
   );
 };
 
-const Form = ({visible, update, onClose, theme}) => {
-  const [fields, setFields] = useState(initial_form);
+const STATUS_TASK = {
+  COMPLETED: 2,
+  REMOVED: 3,
+};
+
+const Form = ({
+  visible,
+  update,
+  onClose,
+  theme,
+  owner,
+  refreshScreen,
+  task_id,
+}) => {
+  const {fields, onChangeFields, saveAllFields} = useFields(initial_form);
+  const [users, setUsers] = useState([]);
+  const [userValue, setUserValue] = useState([]);
+  const [openDropwdown, setOpenDropwdown] = useState(false);
+
+  console.log('FIELDS', fields);
 
   //on close setFields(null)
   useEffect(() => {
+    getAllUsers();
     if (update) {
-      //GET INFO
+      getTask(task_id);
+    } else {
+      setUserValue([owner]);
     }
   }, []);
 
-  console.log(update);
+  const removeTask = async () => {
+    const response = await updateTaskStatus(task_id, STATUS_TASK.REMOVED);
+    if (response.success) {
+      //Show alert :D
+      refreshScreen();
+      onClose();
+    }
+  };
 
-  const onChangeFields = (name, value) => {
-    setFields({
+  const getTask = async id => {
+    const response = await getTaskById(id);
+    if (response.success) {
+      console.log(response.data);
+      const task = {
+        title: response.data.title,
+        description: response.data.description,
+        to: response.data.users,
+        tags: '',
+      };
+      saveAllFields(task);
+      setUserValue(task.to);
+    }
+  };
+
+  const getAllUsers = async () => {
+    const response = await getUsers();
+    if (response.success) {
+      const test = response.data.map(user => {
+        if (!user.avatar) {
+          let user_obj = {
+            ...user,
+            icon: () => (
+              <User
+                style={{
+                  width: 27,
+                  height: 27,
+                  alignSelf: 'center',
+                }}
+              />
+            ),
+          };
+
+          if (user.id === owner) {
+            user_obj = {
+              ...user_obj,
+              label: 'Mig',
+            };
+          }
+          return user_obj;
+        }
+      });
+      setUsers(test);
+      // console.log(response.data);
+    }
+  };
+
+  const submit = async () => {
+    const data = {
       ...fields,
-      [name]: value,
-    });
+    };
+
+    if (!update) {
+      const response = await createTask(data);
+      if (response.success) {
+        refreshScreen();
+        onClose();
+        //Show messsage, task created sth similar
+      }
+    } else {
+      const response = await updateTask(data, task_id);
+      if (response.success) {
+        refreshScreen();
+        onClose();
+      }
+    }
+  };
+
+  const closeModalWithoutSave = () => {
+    onClose();
   };
 
   return (
@@ -114,9 +278,28 @@ const Form = ({visible, update, onClose, theme}) => {
       visible={visible}
       onRequestClose={onClose}>
       <View style={styles.container}>
-        <View>
-          <Text style={styles.title}>{update ? 'Opgave' : 'Opret opgave'}</Text>
-          <View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            marginTop: 56,
+            marginBottom: 37,
+          }}>
+          <View style={{marginLeft: 'auto'}}>
+            <Text style={styles.title}>
+              {update ? 'Opgave' : 'Opret opgave'}
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={{marginLeft: 'auto'}}
+            onPress={closeModalWithoutSave}>
+            <Icon name={'close'} size={30} />
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          onPress={() => setOpenDropwdown(false)}
+          activeOpacity={1}>
+          <View style={{minHeight: 500}}>
             <InputForm
               label={'Titel'}
               onChange={onChangeFields}
@@ -128,13 +311,19 @@ const Form = ({visible, update, onClose, theme}) => {
               onChange={onChangeFields}
               value={fields.description}
               name={'description'}
-
             />
-            <InputForm
+            <SelectForm
               label={'Modtager(e)'}
+              value={fields.to}
+              name={'to'}
+              users={users}
+              setUsers={setUsers}
+              owner={owner}
               onChange={onChangeFields}
-              value={fields.users}
-              name={'users'}
+              setUserValue={setUserValue}
+              userValue={userValue}
+              setOpen={setOpenDropwdown}
+              open={openDropwdown}
             />
             <InputForm
               label={'Tags'}
@@ -142,8 +331,32 @@ const Form = ({visible, update, onClose, theme}) => {
               value={fields.tags}
               name={'tags'}
             />
+            <View
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+              }}>
+              <TouchableOpacity>
+                <Image
+                  style={{
+                    marginLeft: 20,
+                  }}
+                />
+              </TouchableOpacity>
+              {update ? (
+                <TouchableOpacity onPress={removeTask}>
+                  <Delete
+                    style={{
+                      marginRight: 20,
+                    }}
+                  />
+                </TouchableOpacity>
+              ) : null}
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
+
         <View
           style={{
             flex: 1,
@@ -151,7 +364,7 @@ const Form = ({visible, update, onClose, theme}) => {
             alignItems: 'center',
           }}>
           <Button
-            onPress={onClose}
+            onPress={submit}
             text={update ? 'Gem' : 'Opret'}
             theme={theme}
           />

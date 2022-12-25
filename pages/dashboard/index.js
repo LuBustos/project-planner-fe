@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Header from '../../components/header';
 import {useTheme} from '@react-navigation/native';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {TextBox} from '../../components/';
 // import {textStyle} from '../../styles.js';
 import {textStyle} from '../../mixin';
@@ -17,6 +17,7 @@ import EmptyMessage from '../../components/empty';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import ModalForm from '../../components/form';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {getTask, updateTaskStatus} from '../../services/task.service';
 
 const styles = StyleSheet.create({
   title: {
@@ -27,6 +28,8 @@ const styles = StyleSheet.create({
     // color: '#FFFFFF',
   },
 });
+
+const COMPLETED = 2
 
 const mock_tasks = [
   {
@@ -87,19 +90,46 @@ const mock_tasks = [
   },
 ];
 
-const Dashboard = () => {
+const Dashboard = props => {
+  const {
+    route: {params},
+  } = props;
   const {colors} = useTheme();
-  const [tasks, setTasks] = useState(mock_tasks);
-  const [open, setOpen] = useState({open: false, update: false});
+  const [tasks, setTasks] = useState([]);
+  const [open, setOpen] = useState({open: false, update: false,task_id: null});
+  const [refresh, setRefresh] = useState(false);
 
-  const createOrUpdateTask = (update = false) => {
-    console.log(update)
-    setOpen({open: true, update: update});
+  const getAllTask = async id => {
+    const response = await getTask(id);
+    setTasks(response.data);
+  };
+
+  useEffect(() => {
+    getAllTask(params.userId);
+  }, [refresh]);
+
+  const createOrUpdateTask = (update = false,task_id) => {
+    setOpen({open: true, update: update,task_id: task_id});
   };
 
   const closeModal = () => {
-    setOpen({open: false, update: false});
+    setOpen({open: false, update: false,task_id: null});
   };
+
+  const refreshScreen = () => {
+    setRefresh(true);
+    setTimeout(() => {
+      setRefresh(false);
+    }, 250);
+  };
+
+  const completeTask = async (id) => {
+    const response = await updateTaskStatus(id,COMPLETED);
+    if(response.success){
+      //Show alert
+      refreshScreen()
+    }
+  }
 
   return (
     <View style={{flex: 1, height: '100%'}}>
@@ -116,8 +146,8 @@ const Dashboard = () => {
         <FlatList
           data={tasks}
           renderItem={({item}) => (
-            <TextBox onPress={() => createOrUpdateTask(true)}>
-              {item.description}
+            <TextBox onPress={() => createOrUpdateTask(true,item.id)} onCompleteTask={() => completeTask(item.id)}>
+              {item.title}
             </TextBox>
           )} //Call box
           keyExtractor={item => item.id}
@@ -146,12 +176,17 @@ const Dashboard = () => {
           />
         </TouchableOpacity>
       </View>
-      <ModalForm
-        visible={open.open}
-        update={open.update}
-        onClose={closeModal}
-        theme={colors}
-      />
+      {open.open ? (
+        <ModalForm
+          visible={open.open}
+          update={open.update}
+          onClose={closeModal}
+          theme={colors}
+          owner={params.userId}
+          refreshScreen={refreshScreen}
+          task_id={open.task_id}
+        />
+      ) : null}
     </View>
   );
 };

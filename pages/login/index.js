@@ -1,25 +1,53 @@
-import React from 'react';
-import {Text, TextInput, View} from 'react-native';
-import Wave from '../../assets/Wave';
 import {useTheme} from '@react-navigation/native';
+import React from 'react';
+import {View} from 'react-native';
 import {Button} from '../../components';
-const styles = require('../../styles');
-import login_styles from './styles.scss';
-import Input from '../../components/input';
 import Header from '../../components/header';
+import Input from '../../components/input';
+import {useFields} from '../../hooks';
+import login_styles from './styles.scss';
+const styles = require('../../styles');
+import {createUser, login} from '../../services/user.service.js';
+const initial_form = {
+  username: '',
+  password: '',
+};
 
 const Login = props => {
   const {colors} = useTheme();
+  const {fields, onChangeFields} = useFields(initial_form);
   const {
     route: {params},
     navigation,
   } = props;
 
-  const goTo = () => {
+  const goTo = (id) => {
     if (params.isCreateAccount) {
       navigation.navigate('Profile');
     } else {
-      navigation.navigate('Dashboard');
+      navigation.navigate('Dashboard',{
+        userId: id
+      });
+    }
+  };
+
+  const submit = async () => {
+    try {
+      if (params.isCreateAccount) {
+        const response = await createUser(fields);
+        if (response && response.success) {
+          //Show alert
+          goTo();
+        }
+      } else {
+        const response = await login(fields);
+        console.log("RESPONSE",response)
+        if (response && response.success) {
+          goTo(response.id);
+        }
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -38,18 +66,20 @@ const Login = props => {
           label={'Brugernavn'}
           label_styles={login_styles.label}
           theme={colors}
+          onChangeText={text => onChangeFields('username', text)}
         />
         <Input
           label={'Adgangskode'}
           label_styles={login_styles.label}
           theme={colors}
           secureTextEntry={true}
+          onChangeText={text => onChangeFields('password', text)}
         />
         <View style={{alignItems: 'center', marginTop: 65}}>
           <Button
             text={params.isCreateAccount ? 'Fortsæt' : 'Log ind'}
             theme={colors}
-            onPress={goTo}
+            onPress={submit}
           />
         </View>
       </View>
