@@ -98,8 +98,6 @@ const SelectForm = ({
   open,
   setOpen,
 }) => {
-  const [removedUsers, setRemovedUsers] = useState();
-
   useEffect(() => {
     onChange(name, userValue);
   }, [userValue]);
@@ -126,12 +124,6 @@ const SelectForm = ({
               <Text>{owner !== value ? label : '(Mig)'}</Text>
             </View>
           );
-        }}
-        // onSelectItem={(props) => {
-        //   console.log("PROPS",props)
-        // }}
-        onChangeValue={(props) => {
-          console.log("VALUE",props)
         }}
         dropDownDirection="TOP"
         dropDownContainerStyle={{
