@@ -5,24 +5,15 @@ import Profile from '../profile';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import {textStyle} from '../../mixin';
-
-const styles = StyleSheet.create({
-  title: {
-    ...textStyle('800', 36, 54),
-    letterSpacing: 4,
-    alignSelf: 'center',
-  },
-  test: {
-    // position: 'absolute',
-    // top: '17.39%',
-  },
-});
+import styles_2 from './style.scss';
 
 const Header = ({
   title,
   title_style,
   header_style,
   theme,
+  height,
+  userId,
   isFilter = false,
   isProfile = false,
 }) => {
@@ -30,29 +21,52 @@ const Header = ({
   const {colors} = useTheme();
 
   const goToProfile = () => {
-    navigate('Profile');
+    navigate('Profile',{
+      userId: userId
+    });
   };
 
   return (
     <>
-      <Wave style={header_style} />
-      {/* <View
+      <View
         style={{
-          display: 'flex',
-          // justifyContent: ''
-          position: 'relative',
-          flexDirection: 'row',
-          ...title_style,
+          height: height,
+          // display: 'flex',
+          // flexDirection: 'column',
+          // flex: 1,
         }}>
-        <View style={{marginLeft: 'auto'}}>
-          <Icon name={'long-arrow-left'} size={30} />
-        </View>
-        <View style={{marginLeft: 'auto'}}>
-        </View>
-      </View> */}
-      <Text style={{...title_style, color: colors.text}}>{title}</Text>
-      {isProfile ? <Profile onPress={goToProfile} /> : null}
-      {isFilter ? <Filter theme={theme} /> : null}
+        <Wave style={header_style}>
+          {isProfile ? (
+            <View
+              style={{
+                position: 'absolute',
+                top: '8%',
+                right: '7%',
+                alignSelf: 'flex-end',
+              }}>
+              <Profile onPress={goToProfile} />
+            </View>
+          ) : null}
+          {isFilter ? (
+            <View
+              style={{
+                position: 'absolute',
+                top: '20%',
+                alignSelf: 'center',
+              }}>
+              <Filter theme={theme} />
+            </View>
+          ) : null}
+          <View
+            style={{
+              position: 'absolute',
+              alignSelf: 'center',
+              top: '17.39%',
+            }}>
+            <Text style={{...title_style, color: colors.text}}>{title}</Text>
+          </View>
+        </Wave>
+      </View>
     </>
   );
 };

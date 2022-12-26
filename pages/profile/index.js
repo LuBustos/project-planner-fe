@@ -8,13 +8,66 @@ import User from '../../assets/user';
 import Gallery from '../../assets/gallery';
 import Camera from '../../assets/camera';
 
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
+
 const CreateProfile = props => {
-  const {navigation} = props;
+  const {
+    navigation,
+    route: {params},
+  } = props;
   const {colors} = useTheme();
   const [profilePhoto, setProfilePhoto] = useState(null);
 
   const goToDashboard = () => {
-    navigation.navigate('Dashboard');
+    navigation.navigate('Dashboard',{
+      userId: params.userId
+    });
+  };
+
+  const openGallery = async () => {
+    try {
+      const result = await launchImageLibrary({
+        mediaType: 'photo',
+        includeBase64: false,
+        maxHeight: 200,
+        maxWidth: 200,
+      });
+
+      const {uri, fileName} = result.assets[0];
+
+      console.log(result.assets[0]);
+
+      setProfilePhoto({
+        fileName: fileName,
+        fileUri: uri,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const openCamera = async () => {
+    try {
+      const result = await launchCamera({
+        mediaType: 'photo',
+        includeBase64: false,
+        maxHeight: 200,
+        maxWidth: 200,
+      });
+
+      console.log(result);
+
+      // const {uri,fileName,} = result.assets[0]
+
+      // console.log(result.assets[0]);
+
+      // setProfilePhoto({
+      //   fileName: fileName,
+      //   fileUri: uri,
+      // });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -22,62 +75,68 @@ const CreateProfile = props => {
       <Header
         header_style={{
           left: -55,
-          top: -100,
+          top: -120,
         }}
+        height="45%"
         title={'Profilbillede'}
         title_style={{...styles.second_title, color: colors.text}}
       />
       <View>
-        <User
-          style={{
-            left: 0,
-            top: -80,
-            alignSelf: 'center',
-            width:150,
-            height:150
-          }}
-        />
-        {/* <Image source={{uri: '../../assets/user.js'}} style={{
-            width: "100%",
-            height: 200,
-            resizeMode: 'contain'
-        }} /> */}
+        {!profilePhoto ? (
+          <User
+            style={{
+              alignSelf: 'center',
+              width: 150,
+              height: 150,
+            }}
+          />
+        ) : (
+          <Image
+            source={{uri: profilePhoto.fileUri}}
+            style={{
+              width: 150,
+              height: 150,
+              borderRadius: 150 / 2,
+              alignSelf: 'center',
+            }}
+          />
+        )}
       </View>
-      <View>
-        <TouchableOpacity>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+          margin: 20,
+        }}>
+        <TouchableOpacity onPress={openCamera}>
           <Camera
             style={{
-              left: 134,
-              top: -70,
+              alignSelf: 'center',
             }}
           />
           <Text
             style={{
-              left: 124,
-              top: -70,
               ...styles.icon_text,
             }}>
             Kamera
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={openGallery}>
           <Gallery
             style={{
-              left: 227,
-              top: -114,
+              alignSelf: 'center',
             }}
           />
           <Text
             style={{
-              left: 216,
-              top: -115,
               ...styles.icon_text,
             }}>
             Upload
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={{alignItems: 'center', marginTop: -70}}>
+      <View style={{alignItems: 'center', marginTop: 20}}>
         <Button onPress={goToDashboard} text={'Vælg'} theme={colors} />
       </View>
     </View>

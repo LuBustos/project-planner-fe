@@ -10,7 +10,7 @@ import {
 import Header from '../../components/header';
 import {useTheme} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
-import {TextBox} from '../../components/';
+import {TextBox, customAlert} from '../../components/';
 // import {textStyle} from '../../styles.js';
 import {textStyle} from '../../mixin';
 import EmptyMessage from '../../components/empty';
@@ -18,6 +18,8 @@ import Icon from 'react-native-vector-icons/FontAwesome.js';
 import ModalForm from '../../components/form';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {getTask, updateTaskStatus} from '../../services/task.service';
+import Snackbar from 'react-native-snackbar';
+
 
 const styles = StyleSheet.create({
   title: {
@@ -98,6 +100,7 @@ const Dashboard = props => {
   const [tasks, setTasks] = useState([]);
   const [open, setOpen] = useState({open: false, update: false,task_id: null});
   const [refresh, setRefresh] = useState(false);
+  // const [filterOptions,setFilterOptions] = useState([])
 
   const getAllTask = async id => {
     const response = await getTask(id);
@@ -126,7 +129,12 @@ const Dashboard = props => {
   const completeTask = async (id) => {
     const response = await updateTaskStatus(id,COMPLETED);
     if(response.success){
-      //Show alert
+      Snackbar.show({
+        text: response.message,
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: "#27AE60",
+        textColor: 'black',
+      });
       refreshScreen()
     }
   }
@@ -138,9 +146,11 @@ const Dashboard = props => {
           left: -55,
           top: -120,
         }}
+        height="65%"
         isFilter
         theme={colors}
         isProfile
+        userId={params.userId}
       />
       <View style={{flex: 1, marginTop: -250}}>
         <FlatList
@@ -152,7 +162,7 @@ const Dashboard = props => {
           )} //Call box
           keyExtractor={item => item.id}
           ListEmptyComponent={() => {
-            return <EmptyMessage />; //Call Icon empty
+            return <EmptyMessage />; //Call empty message
           }}
           ListHeaderComponent={() => {
             return tasks.length > 0 ? (

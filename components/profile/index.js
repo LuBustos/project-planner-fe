@@ -5,15 +5,12 @@ const Profile = ({onPress}) => {
   return (
     <View>
       <TouchableOpacity onPress={onPress}>
-        <User style={{
-            position: 'absolute',
-            width:51,
-            height:51,
-            top: -420,
-            bottom: 0,
-            left: 320,
-            right: 0
-        }}/>
+        <User
+          style={{
+            width: 51,
+            height: 51,
+          }}
+        />
       </TouchableOpacity>
     </View>
   );
