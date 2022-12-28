@@ -7,18 +7,19 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Image,
 } from 'react-native';
 import {textStyle} from '../../mixin';
 import Button from '../button';
 import {useEffect, useState} from 'react';
-import {useFields} from '../../hooks';
+import {useFields, useImages} from '../../hooks';
 import {
   createTask,
   getTaskById,
   updateTask,
   updateTaskStatus,
 } from '../../services/task.service';
-import Image from '../../assets/image';
+import ImageSvg from '../../assets/image';
 import Delete from '../../assets/delete';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -169,8 +170,7 @@ const Form = ({
   const [users, setUsers] = useState([]);
   const [userValue, setUserValue] = useState([]);
   const [openDropwdown, setOpenDropwdown] = useState(false);
-
-  console.log('FIELDS', fields);
+  const {imageGallery, openGallery} = useImages();
 
   //on close setFields(null)
   useEffect(() => {
@@ -194,7 +194,6 @@ const Form = ({
   const getTask = async id => {
     const response = await getTaskById(id);
     if (response.success) {
-      console.log(response.data);
       const task = {
         title: response.data.title,
         description: response.data.description,
@@ -209,11 +208,12 @@ const Form = ({
   const getAllUsers = async () => {
     const response = await getUsers();
     if (response.success) {
-      const test = response.data.map(user => {
-        if (!user.avatar) {
-          let user_obj = {
-            ...user,
-            icon: () => (
+      const userList = response.data.map(user => {
+        let user_obj = {
+          label: user.id === owner ? 'Mig' : user.label,
+          value: user.value,
+          icon: () =>
+            !user.avatar ? (
               <User
                 style={{
                   width: 27,
@@ -221,26 +221,37 @@ const Form = ({
                   alignSelf: 'center',
                 }}
               />
+            ) : (
+              <Image
+                source={{uri: user.avatar}}
+                style={{
+                  width: 27,
+                  height: 27,
+                  alignSelf: 'center',
+                  borderRadius: 150 / 2,
+                }}
+              />
             ),
-          };
+        };
 
-          if (user.id === owner) {
-            user_obj = {
-              ...user_obj,
-              label: 'Mig',
-            };
-          }
-          return user_obj;
-        }
+        return user_obj;
       });
-      setUsers(test);
-      // console.log(response.data);
+      setUsers(userList);
     }
   };
 
   const submit = async () => {
+    console.log(imageGallery);
+
+    const uri =
+      Platform.OS === 'ios'
+        ? imageGallery.fileUri.replace('file://', '')
+        : imageGallery.fileUri;
+
     const data = {
       ...fields,
+      created_by: owner,
+      image: uri,
     };
 
     if (!update) {
@@ -329,8 +340,8 @@ const Form = ({
                 justifyContent: 'space-between',
                 flexDirection: 'row',
               }}>
-              <TouchableOpacity>
-                <Image
+              <TouchableOpacity onPress={openGallery}>
+                <ImageSvg
                   style={{
                     marginLeft: 20,
                   }}

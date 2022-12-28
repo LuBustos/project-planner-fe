@@ -2,17 +2,15 @@ import axios from 'axios';
 
 const local = 'http://localhost:3001/api';
 
-export const getTask = async id => {
+export const getTask = async (id,body) => {
   try {
     const url = `${local}/task/list?id=${id}`;
-    const response = await axios.get(url);
+    const response = await axios.post(url,body);
     if (response.status === 200) {
       return response.data;
     }
-    return {success: false, data: []};
   } catch (error) {
-    console.log(error);
-    return {success: false, message: error, data: []};
+    return error.response
   }
 };
 
@@ -25,8 +23,7 @@ export const getTaskById = async id => {
       }
       return {success: false, data: []};
     } catch (error) {
-      console.log(error);
-      return {success: false, message: error, data: []};
+      return error.response
     }
   };
 
@@ -39,8 +36,7 @@ export const createTask = async body => {
       }
       return {success: false, message: 'Ops!'};
     } catch (error) {
-      console.log(error);
-      return {success: false, message: error};
+      return error.response
     }
 };
 
@@ -53,8 +49,7 @@ export const updateTask = async (body,task_id) => {
     }
     return {success: false, message: 'Ops!'};
   } catch (error) {
-    console.log(error);
-    return {success: false, message: error};
+    return error.response
   }
 };
 
@@ -67,7 +62,6 @@ export const updateTaskStatus = async (id,status) => {
     }
     return {success: false, message: 'Ops!'};
   }catch(error){
-    console.log(error);
-    return {success: false, message: error};
+    return error.response
   }
 }

@@ -19,7 +19,8 @@ import ModalForm from '../../components/form';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {getTask, updateTaskStatus} from '../../services/task.service';
 import Snackbar from 'react-native-snackbar';
-
+import {errorMessage, successMessage} from '../../utils/snackbar';
+import {getUserById} from '../../services/user.service';
 
 const styles = StyleSheet.create({
   title: {
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const COMPLETED = 2
+const COMPLETED = 2;
 
 const mock_tasks = [
   {
@@ -98,25 +99,40 @@ const Dashboard = props => {
   } = props;
   const {colors} = useTheme();
   const [tasks, setTasks] = useState([]);
-  const [open, setOpen] = useState({open: false, update: false,task_id: null});
+  const [profilePhoto, setProfilePhoto] = useState(null);
+  const [open, setOpen] = useState({open: false, update: false, task_id: null});
   const [refresh, setRefresh] = useState(false);
-  // const [filterOptions,setFilterOptions] = useState([])
+  const [filterOptions, setFilterOptions] = useState([
+    {message: null, options: []},
+  ]);
 
   const getAllTask = async id => {
-    const response = await getTask(id);
+    const response = await getTask(id, filterOptions); //we should transform this in a post!
     setTasks(response.data);
   };
 
-  useEffect(() => {
-    getAllTask(params.userId);
-  }, [refresh]);
+  const getProfile = async id => {
+    const response = await getUserById(id);
+    setProfilePhoto(response.data.avatar);
+  };
 
-  const createOrUpdateTask = (update = false,task_id) => {
-    setOpen({open: true, update: update,task_id: task_id});
+  useEffect(() => {
+    Promise.all(
+      getAllTask(params.userId, filterOptions),
+      getProfile(params.userId),
+    );
+  }, [refresh, filterOptions]);
+
+  const createOrUpdateTask = (update = false, task_id) => {
+    setOpen({open: true, update: update, task_id: task_id});
   };
 
   const closeModal = () => {
-    setOpen({open: false, update: false,task_id: null});
+    setOpen({open: false, update: false, task_id: null});
+  };
+
+  const handlerFilters = value => {
+    setFilterOptions(value);
   };
 
   const refreshScreen = () => {
@@ -126,18 +142,15 @@ const Dashboard = props => {
     }, 250);
   };
 
-  const completeTask = async (id) => {
-    const response = await updateTaskStatus(id,COMPLETED);
-    if(response.success){
-      Snackbar.show({
-        text: response.message,
-        duration: Snackbar.LENGTH_LONG,
-        backgroundColor: "#27AE60",
-        textColor: 'black',
-      });
-      refreshScreen()
+  const completeTask = async id => {
+    const response = await updateTaskStatus(id, COMPLETED);
+    if (response.success) {
+      successMessage(response.message);
+      refreshScreen();
+    } else {
+      errorMessage(response.message);
     }
-  }
+  };
 
   return (
     <View style={{flex: 1, height: '100%'}}>
@@ -151,12 +164,16 @@ const Dashboard = props => {
         theme={colors}
         isProfile
         userId={params.userId}
+        handlerFilters={handlerFilters}
+        profilePhoto={profilePhoto}
       />
       <View style={{flex: 1, marginTop: -250}}>
         <FlatList
           data={tasks}
           renderItem={({item}) => (
-            <TextBox onPress={() => createOrUpdateTask(true,item.id)} onCompleteTask={() => completeTask(item.id)}>
+            <TextBox
+              onPress={() => createOrUpdateTask(true, item.id)}
+              onCompleteTask={() => completeTask(item.id)}>
               {item.title}
             </TextBox>
           )} //Call box

@@ -1,11 +1,8 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import Wave from '../../assets/Wave';
 import Filter from '../filter';
 import Profile from '../profile';
 import {useNavigation, useTheme} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome.js';
-import {textStyle} from '../../mixin';
-import styles_2 from './style.scss';
 
 const Header = ({
   title,
@@ -14,15 +11,17 @@ const Header = ({
   theme,
   height,
   userId,
+  profilePhoto,
   isFilter = false,
   isProfile = false,
+  handlerFilters,
 }) => {
   const {navigate} = useNavigation();
   const {colors} = useTheme();
 
   const goToProfile = () => {
-    navigate('Profile',{
-      userId: userId
+    navigate('Profile', {
+      userId: userId,
     });
   };
 
@@ -31,9 +30,6 @@ const Header = ({
       <View
         style={{
           height: height,
-          // display: 'flex',
-          // flexDirection: 'column',
-          // flex: 1,
         }}>
         <Wave style={header_style}>
           {isProfile ? (
@@ -44,7 +40,7 @@ const Header = ({
                 right: '7%',
                 alignSelf: 'flex-end',
               }}>
-              <Profile onPress={goToProfile} />
+              <Profile onPress={goToProfile} profilePhoto={profilePhoto}/>
             </View>
           ) : null}
           {isFilter ? (
@@ -54,7 +50,7 @@ const Header = ({
                 top: '20%',
                 alignSelf: 'center',
               }}>
-              <Filter theme={theme} />
+              <Filter theme={theme} handlerFilters={handlerFilters} />
             </View>
           ) : null}
           <View

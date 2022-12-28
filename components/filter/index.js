@@ -13,7 +13,9 @@ import FilterIcon from '../../assets/filter';
 import Loop from '../../assets/loop';
 import Button from '../button';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
+import {useDebounce} from 'use-debounce';
+import {useFilters} from '../../hooks';
 
 const styles_filter = StyleSheet.create({
   container: {
@@ -59,12 +61,13 @@ const filter_options = [
   },
   {
     id: 4,
-    name: 'Omtaler mig',
+    name: 'Med billeder',
     value: 4,
   },
 ];
 
-const FilterModal = ({visible, onClose, theme, options, setOptions}) => {
+const FilterModal = ({visible, onClose, theme, filterOptions}) => {
+  const [options, setOptions] = useState([]);
   const addFilter = value => {
     if (options.includes(value)) {
       const removed = options.filter(op => op !== value);
@@ -110,24 +113,29 @@ const FilterModal = ({visible, onClose, theme, options, setOptions}) => {
             justifyContent: 'flex-end',
             alignItems: 'center',
           }}>
-          <Button text={'Gem'} onPress={onClose} theme={theme} />
+          <Button text={'Gem'} onPress={() => onClose(options)} theme={theme} />
         </View>
       </View>
     </Modal>
   );
 };
 
-const Filter = ({theme}) => {
-  const [options, setOptions] = useState([]);
-  const [open, setOpen] = useState(false);
+const Filter = ({theme, handlerFilters}) => {
+  const {
+    closeFilterModal,
+    filterMessageDebounced,
+    filterOptions,
+    handlerFilterText,
+    open,
+    showFilterModal,
+  } = useFilters();
 
-  const showFilterModal = () => {
-    setOpen(true);
-  };
-
-  const closeFilterModal = () => {
-    setOpen(false);
-  };
+  useEffect(() => {
+    handlerFilters({
+      message: filterMessageDebounced,
+      options: filterOptions,
+    });
+  }, [filterMessageDebounced, filterOptions]);
 
   return (
     <View
@@ -158,6 +166,7 @@ const Filter = ({theme}) => {
           height: 43,
           ...styles.placeholder_text,
         }}
+        onChangeText={handlerFilterText}
         focusable={false}
       />
       <TouchableOpacity
@@ -167,12 +176,33 @@ const Filter = ({theme}) => {
           right: 30,
           zIndex: 1,
         }}>
-        <FilterIcon />
+        <FilterIcon>
+          {filterOptions.length > 0 ? (
+            <View
+              style={{
+                left: 10,
+                top: -7,
+              }}>
+              <Icon name="circle" color={'#F2994A'} size={17}></Icon>
+              <Text
+                style={{
+                  position: 'absolute',
+                  color: 'white',
+                  paddingLeft: 4,
+                  paddingTop: 2.2,
+                  fontWeight: '500',
+                  fontSize: 10,
+                  lineHeight: 12,
+                }}>
+                {filterOptions.length}
+              </Text>
+            </View>
+          ) : null}
+        </FilterIcon>
       </TouchableOpacity>
       <FilterModal
         visible={open}
-        setOptions={setOptions}
-        options={options}
+        filterOptions={filterOptions}
         onClose={closeFilterModal}
         theme={theme}
       />

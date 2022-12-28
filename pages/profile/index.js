@@ -1,14 +1,14 @@
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Platform, Text, TouchableOpacity, View} from 'react-native';
 import Header from '../../components/header';
 import {Button} from '../../components';
 import styles from '../../styles.js';
 import {useTheme} from '@react-navigation/native';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import User from '../../assets/user';
 import Gallery from '../../assets/gallery';
 import Camera from '../../assets/camera';
-
-import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
+import {useImages} from '../../hooks';
+import {getUserById, updateUser} from '../../services/user.service';
 
 const CreateProfile = props => {
   const {
@@ -16,57 +16,45 @@ const CreateProfile = props => {
     route: {params},
   } = props;
   const {colors} = useTheme();
-  const [profilePhoto, setProfilePhoto] = useState(null);
+  const {imageCamera, imageGallery, openCamera, openGallery,handleImageGallery} = useImages();
 
-  const goToDashboard = () => {
-    navigation.navigate('Dashboard',{
-      userId: params.userId
-    });
-  };
+  useEffect(() => {
+    getProfile();
+  }, []);
 
-  const openGallery = async () => {
+  const getProfile = async () => {
     try {
-      const result = await launchImageLibrary({
-        mediaType: 'photo',
-        includeBase64: false,
-        maxHeight: 200,
-        maxWidth: 200,
-      });
-
-      const {uri, fileName} = result.assets[0];
-
-      console.log(result.assets[0]);
-
-      setProfilePhoto({
-        fileName: fileName,
-        fileUri: uri,
-      });
+      const response = await getUserById(params.userId);
+      handleImageGallery({uri: response.data.avatar})
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
-  const openCamera = async () => {
-    try {
-      const result = await launchCamera({
-        mediaType: 'photo',
-        includeBase64: false,
-        maxHeight: 200,
-        maxWidth: 200,
-      });
+  const goToDashboard = () => {
+    navigation.navigate('Dashboard', {
+      userId: params.userId,
+    });
+  };
 
-      console.log(result);
+  const createFormData = photo => {
+    const data = {
+      name: photo.fileName,
+      type: photo.type,
+      uri:
+        Platform.OS === 'ios'
+          ? photo.fileUri.replace('file://', '')
+          : photo.fileUri,
+    };
 
-      // const {uri,fileName,} = result.assets[0]
+    return data;
+  };
 
-      // console.log(result.assets[0]);
-
-      // setProfilePhoto({
-      //   fileName: fileName,
-      //   fileUri: uri,
-      // });
-    } catch (error) {
-      console.log(error);
+  const submit = async () => {
+    const data = createFormData(imageGallery);
+    const response = await updateUser(params.userId, data);
+    if(response){
+      goToDashboard();
     }
   };
 
@@ -82,7 +70,7 @@ const CreateProfile = props => {
         title_style={{...styles.second_title, color: colors.text}}
       />
       <View>
-        {!profilePhoto ? (
+        {!imageGallery ? (
           <User
             style={{
               alignSelf: 'center',
@@ -92,7 +80,7 @@ const CreateProfile = props => {
           />
         ) : (
           <Image
-            source={{uri: profilePhoto.fileUri}}
+            source={{uri: `${imageGallery.fileUri}`}}
             style={{
               width: 150,
               height: 150,
@@ -137,7 +125,7 @@ const CreateProfile = props => {
         </TouchableOpacity>
       </View>
       <View style={{alignItems: 'center', marginTop: 20}}>
-        <Button onPress={goToDashboard} text={'Vælg'} theme={colors} />
+        <Button onPress={submit} text={'Vælg'} theme={colors} />
       </View>
     </View>
   );

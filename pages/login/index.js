@@ -8,6 +8,8 @@ import {useFields} from '../../hooks';
 import login_styles from './styles.scss';
 const styles = require('../../styles');
 import {createUser, login} from '../../services/user.service.js';
+import Snackbar from 'react-native-snackbar';
+import {errorMessage} from '../../utils/snackbar';
 const initial_form = {
   username: '',
   password: '',
@@ -21,12 +23,12 @@ const Login = props => {
     navigation,
   } = props;
 
-  const goTo = (id) => {
+  const goTo = id => {
     if (params.isCreateAccount) {
       navigation.navigate('Profile');
     } else {
-      navigation.navigate('Dashboard',{
-        userId: id
+      navigation.navigate('Dashboard', {
+        userId: id,
       });
     }
   };
@@ -36,14 +38,16 @@ const Login = props => {
       if (params.isCreateAccount) {
         const response = await createUser(fields);
         if (response && response.success) {
-          //Show alert
           goTo();
+        } else {
+          errorMessage(response.message);
         }
       } else {
         const response = await login(fields);
-        console.log("RESPONSE",response)
         if (response && response.success) {
           goTo(response.id);
+        } else {
+          errorMessage(response.message);
         }
       }
     } catch (error) {
