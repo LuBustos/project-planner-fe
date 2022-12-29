@@ -241,7 +241,6 @@ const Form = ({
   };
 
   const submit = async () => {
-    console.log(imageGallery);
 
     const uri =
       Platform.OS === 'ios'

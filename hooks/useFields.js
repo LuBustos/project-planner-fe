@@ -1,5 +1,5 @@
 
-import {useState} from 'react'
+import { useState } from 'react';
 
 function useFields(initial_form){
     const [fields, setFields] = useState(initial_form);
@@ -17,7 +17,11 @@ function useFields(initial_form){
       })
     }
 
-    return {fields,onChangeFields,saveAllFields}
+    const cleanFields = () => {
+      setFields(initial_form);
+    }
+
+    return {fields,onChangeFields,saveAllFields,cleanFields}
 }
 
 export default useFields;

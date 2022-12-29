@@ -1,8 +1,9 @@
-import {Text, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import Wave from '../../assets/Wave';
 import Filter from '../filter';
 import Profile from '../profile';
 import {useNavigation, useTheme} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome.js';
 
 const Header = ({
   title,
@@ -12,16 +13,27 @@ const Header = ({
   height,
   userId,
   profilePhoto,
+  handlerFilters,
   isFilter = false,
   isProfile = false,
-  handlerFilters,
+  isGoBack = false,
+  isAccount = false,
+  arrowTop = '27%',
 }) => {
-  const {navigate} = useNavigation();
+  const {navigate, goBack} = useNavigation();
   const {colors} = useTheme();
+
+  const goToAccount = () => {
+    navigate('Account', {
+      userId: userId,
+      isCreateAccount: false,
+    });
+  };
 
   const goToProfile = () => {
     navigate('Profile', {
       userId: userId,
+      isCreateAccount: false,
     });
   };
 
@@ -32,6 +44,30 @@ const Header = ({
           height: height,
         }}>
         <Wave style={header_style}>
+          {isAccount ? (
+            <View
+              style={{
+                position: 'absolute',
+                top: '13%',
+                alignSelf: 'center',
+              }}>
+              <Profile profilePhoto={profilePhoto} height={100} width={100} />
+              <TouchableOpacity onPress={goToProfile}>
+                <Text
+                  style={{
+                    fontWeight: '600',
+                    fontSize: 11,
+                    lineHeight: 16,
+                    textDecorationLine: 'underline',
+                    color: '#FFFFFF',
+                    marginTop: 8,
+                    marginLeft: 5,
+                  }}>
+                  Skift profilbillede
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : null}
           {isProfile ? (
             <View
               style={{
@@ -40,7 +76,7 @@ const Header = ({
                 right: '7%',
                 alignSelf: 'flex-end',
               }}>
-              <Profile onPress={goToProfile} profilePhoto={profilePhoto}/>
+              <Profile onPress={goToAccount} profilePhoto={profilePhoto} />
             </View>
           ) : null}
           {isFilter ? (
@@ -51,6 +87,19 @@ const Header = ({
                 alignSelf: 'center',
               }}>
               <Filter theme={theme} handlerFilters={handlerFilters} />
+            </View>
+          ) : null}
+          {isGoBack ? (
+            <View
+              style={{
+                position: 'absolute',
+                alignSelf: 'flex-start',
+                top: arrowTop,
+                marginLeft: 15,
+              }}>
+              <TouchableOpacity onPress={goBack}>
+                <Icon name="long-arrow-left" size={30} color={'#FFFFFF'} />
+              </TouchableOpacity>
             </View>
           ) : null}
           <View

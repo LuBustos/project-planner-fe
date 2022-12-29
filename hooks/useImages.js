@@ -33,8 +33,6 @@ function useImages() {
       if (result) {
         const {uri, fileName} = result.assets[0];
 
-        console.log(result.assets[0]);
-
         setImageCamera({
           fileName: fileName,
           fileUri: uri,

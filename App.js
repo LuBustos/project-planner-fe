@@ -31,7 +31,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {Home, Login,CreateProfile,Dashboard} from './pages/index';
+import {Home, Login,CreateProfile,Dashboard, Account} from './pages/index';
 import Wave from './assets/Wave.js';
 import styles from './styles';
 import SocialMedia from './assets/Social Media';
@@ -95,6 +95,7 @@ const App = () => {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Profile" component={CreateProfile} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
+        <Stack.Screen name="Account" component={Account} />
       </Stack.Navigator>
     </NavigationContainer>
   );

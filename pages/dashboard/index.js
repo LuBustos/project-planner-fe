@@ -1,26 +1,16 @@
-import {
-  FlatList,
-  Modal,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Header from '../../components/header';
 import {useTheme} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
-import {TextBox, customAlert} from '../../components/';
-// import {textStyle} from '../../styles.js';
+import {TextBox} from '../../components/';
 import {textStyle} from '../../mixin';
 import EmptyMessage from '../../components/empty';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import ModalForm from '../../components/form';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {getTask, updateTaskStatus} from '../../services/task.service';
-import Snackbar from 'react-native-snackbar';
 import {errorMessage, successMessage} from '../../utils/snackbar';
 import {getUserById} from '../../services/user.service';
+import GuestModal from '../../components/modal/guest';
 
 const styles = StyleSheet.create({
   title: {
@@ -28,70 +18,10 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginLeft: 27,
     marginBottom: 23,
-    // color: '#FFFFFF',
   },
 });
 
 const COMPLETED = 2;
-
-const mock_tasks = [
-  {
-    id: 1,
-    title: 'Task 1',
-    description: 'This is my first task',
-    destiny: [{}], //For people
-    tags: [],
-  },
-  {
-    id: 2,
-    title: 'Task 2',
-    description: 'This is my second task',
-    destiny: [{}], //For people
-    tags: [],
-  },
-  {
-    id: 3,
-    title: 'Task 3',
-    description: 'Ops!',
-    destiny: [{}], //For people
-    tags: [],
-  },
-  {
-    id: 4,
-    title: 'Task 4',
-    description: 'Ops 4',
-    destiny: [{}], //For people
-    tags: [],
-  },
-  {
-    id: 5,
-    title: 'Task 4',
-    description: 'Ops 4',
-    destiny: [{}], //For people
-    tags: [],
-  },
-  {
-    id: 6,
-    title: 'Task 4',
-    description: 'Ops 4',
-    destiny: [{}], //For people
-    tags: [],
-  },
-  {
-    id: 7,
-    title: 'Task 4',
-    description: 'Ops 4',
-    destiny: [{}], //For people
-    tags: [],
-  },
-  {
-    id: 8,
-    title: 'Task 4',
-    description: 'Ops 4',
-    destiny: [{}], //For people
-    tags: [],
-  },
-];
 
 const Dashboard = props => {
   const {
@@ -102,9 +32,25 @@ const Dashboard = props => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [open, setOpen] = useState({open: false, update: false, task_id: null});
   const [refresh, setRefresh] = useState(false);
+  const [modalGuest, setModalGuest] = useState(false);
   const [filterOptions, setFilterOptions] = useState([
     {message: null, options: []},
   ]);
+
+  useEffect(() => {
+    if (!params.userId) {
+      setModalGuest(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (params.userId) {
+      Promise.all(
+        getAllTask(params.userId, filterOptions),
+        getProfile(params.userId),
+      );
+    }
+  }, [refresh, filterOptions]);
 
   const getAllTask = async id => {
     const response = await getTask(id, filterOptions); //we should transform this in a post!
@@ -115,13 +61,6 @@ const Dashboard = props => {
     const response = await getUserById(id);
     setProfilePhoto(response.data.avatar);
   };
-
-  useEffect(() => {
-    Promise.all(
-      getAllTask(params.userId, filterOptions),
-      getProfile(params.userId),
-    );
-  }, [refresh, filterOptions]);
 
   const createOrUpdateTask = (update = false, task_id) => {
     setOpen({open: true, update: update, task_id: task_id});
@@ -213,6 +152,9 @@ const Dashboard = props => {
           refreshScreen={refreshScreen}
           task_id={open.task_id}
         />
+      ) : null}
+      {modalGuest ? (
+        <GuestModal visible={modalGuest} onClose={() => {}} theme={colors} />
       ) : null}
     </View>
   );

@@ -78,8 +78,7 @@ const styles = StyleSheet.create({
     color: '#BDBDBD',
   },
   second_title: {
-    position: 'absolute',
-    top: '17.39%',
+    top: '50%',
     ...textStyle('800', 36, 54),
     letterSpacing: 4,
     alignSelf: 'center',

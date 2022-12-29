@@ -8,7 +8,6 @@ import {Button} from '../../components/index'
 
 const Home = props => {
   const {navigation} = props;
-  console.log(props);
 
   const goToLogin = (isCreateAccount) => {
     navigation.navigate('Login',{

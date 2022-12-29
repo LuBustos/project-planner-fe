@@ -3,12 +3,12 @@ import Header from '../../components/header';
 import {Button} from '../../components';
 import styles from '../../styles.js';
 import {useTheme} from '@react-navigation/native';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import User from '../../assets/user';
 import Gallery from '../../assets/gallery';
 import Camera from '../../assets/camera';
 import {useImages} from '../../hooks';
-import {getUserById, updateUser} from '../../services/user.service';
+import {getUserById, updateAvatar} from '../../services/user.service';
 
 const CreateProfile = props => {
   const {
@@ -16,7 +16,13 @@ const CreateProfile = props => {
     route: {params},
   } = props;
   const {colors} = useTheme();
-  const {imageCamera, imageGallery, openCamera, openGallery,handleImageGallery} = useImages();
+  const {
+    imageCamera,
+    imageGallery,
+    openCamera,
+    openGallery,
+    handleImageGallery,
+  } = useImages();
 
   useEffect(() => {
     getProfile();
@@ -25,7 +31,9 @@ const CreateProfile = props => {
   const getProfile = async () => {
     try {
       const response = await getUserById(params.userId);
-      handleImageGallery({uri: response.data.avatar})
+      if(response.data.avatar){
+        handleImageGallery({uri: response.data.avatar});
+      }
     } catch (error) {
       console.error(error);
     }
@@ -51,9 +59,13 @@ const CreateProfile = props => {
   };
 
   const submit = async () => {
-    const data = createFormData(imageGallery);
-    const response = await updateUser(params.userId, data);
-    if(response){
+    if (imageGallery && imageGallery.fileUri) {
+      const data = createFormData(imageGallery);
+      const response = await updateAvatar(params.userId, data);
+      if (response) {
+        goToDashboard();
+      }
+    } else {
       goToDashboard();
     }
   };
@@ -63,14 +75,16 @@ const CreateProfile = props => {
       <Header
         header_style={{
           left: -55,
-          top: -120,
+          top: -150,
         }}
+        arrowTop={"29%"}
         height="45%"
+        // isGoBack={params.isCreateAccount ? false : true}
         title={'Profilbillede'}
         title_style={{...styles.second_title, color: colors.text}}
       />
       <View>
-        {!imageGallery ? (
+        {!imageGallery?.fileUri ? (
           <User
             style={{
               alignSelf: 'center',
@@ -125,7 +139,7 @@ const CreateProfile = props => {
         </TouchableOpacity>
       </View>
       <View style={{alignItems: 'center', marginTop: 20}}>
-        <Button onPress={submit} text={'Vælg'} theme={colors} />
+        <Button onPress={submit} text={params.isCreateAccount ? 'Vælg' : 'Gem'} theme={colors} />
       </View>
     </View>
   );
