@@ -39,9 +39,10 @@ const CreateProfile = props => {
     }
   };
 
-  const goToDashboard = () => {
+  const goToDashboard = (refresh) => {
     navigation.navigate('Dashboard', {
       userId: params.userId,
+      refreshDashboard: refresh
     });
   };
 
@@ -63,10 +64,10 @@ const CreateProfile = props => {
       const data = createFormData(imageGallery);
       const response = await updateAvatar(params.userId, data);
       if (response) {
-        goToDashboard();
+        goToDashboard(true);
       }
     } else {
-      goToDashboard();
+      goToDashboard(false);
     }
   };
 

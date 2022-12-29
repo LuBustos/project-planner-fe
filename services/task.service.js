@@ -10,7 +10,7 @@ export const getTask = async (id,body) => {
       return response.data;
     }
   } catch (error) {
-    return error.response
+    return error.response.data
   }
 };
 
@@ -23,7 +23,7 @@ export const getTaskById = async id => {
       }
       return {success: false, data: []};
     } catch (error) {
-      return error.response
+      return error.response.data
     }
   };
 
@@ -36,7 +36,7 @@ export const createTask = async body => {
       }
       return {success: false, message: 'Ops!'};
     } catch (error) {
-      return error.response
+      return error.response.data
     }
 };
 
@@ -49,7 +49,7 @@ export const updateTask = async (body,task_id) => {
     }
     return {success: false, message: 'Ops!'};
   } catch (error) {
-    return error.response
+    return error.response.data
   }
 };
 
@@ -62,6 +62,6 @@ export const updateTaskStatus = async (id,status) => {
     }
     return {success: false, message: 'Ops!'};
   }catch(error){
-    return error.response
+    return error.response.data
   }
 }

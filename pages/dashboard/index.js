@@ -27,6 +27,7 @@ const Dashboard = props => {
   const {
     route: {params},
   } = props;
+  const {refreshDashboard} = params
   const {colors} = useTheme();
   const [tasks, setTasks] = useState([]);
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -50,7 +51,7 @@ const Dashboard = props => {
         getProfile(params.userId),
       );
     }
-  }, [refresh, filterOptions]);
+  }, [refresh, filterOptions,refreshDashboard]);
 
   const getAllTask = async id => {
     const response = await getTask(id, filterOptions); //we should transform this in a post!
@@ -105,6 +106,7 @@ const Dashboard = props => {
         userId={params.userId}
         handlerFilters={handlerFilters}
         profilePhoto={profilePhoto}
+        refreshScreen={refreshScreen}
       />
       <View style={{flex: 1, marginTop: -250}}>
         <FlatList

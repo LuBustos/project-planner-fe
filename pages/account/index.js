@@ -1,14 +1,31 @@
 import {useTheme} from '@react-navigation/native';
 import React, {useEffect} from 'react';
-import {Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {Button} from '../../components';
 import Header from '../../components/header';
 import Input from '../../components/input';
 import {useFields} from '../../hooks';
 import {getUserById, updateUser} from '../../services/user.service.js';
-import styles from '../../styles';
 import {errorMessage} from '../../utils/snackbar';
 import login_styles from '../login/styles.scss';
+import {textStyle} from '../../mixin';
+
+const styles = StyleSheet.create({
+  title: {
+    ...textStyle('600', 18, 27),
+    letterSpacing: 1,
+    marginLeft: 27,
+    marginBottom: 30,
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+  },
+  form: {
+    alignSelf: 'center',
+  }
+});
 
 const initial_form = {
   username: '',
@@ -66,35 +83,38 @@ const Account = props => {
       <Header
         height={'55%'}
         header_style={{
-          left: -45,
+          left: -55,
           top: -150,
         }}
         isGoBack
         isAccount
         profilePhoto={fields.avatar}
-        arrowTop={'13%'}
+        arrowTop={'23%'}
         userId={params.userId}
       />
-      <View style={login_styles.form}>
+      <View style={styles.container}>
         <Text style={{...styles.title, color: colors.backgroundButton}}>
-          Mine opgaver
+          Konto
         </Text>
-        <Input
-          label={'Brugernavn'}
-          label_styles={login_styles.label}
-          theme={colors}
-          onChangeText={text => onChangeFields('username', text)}
-          value={fields.username}
-        />
-        <Input
-          label={'Adgangskode'}
-          label_styles={login_styles.label}
-          theme={colors}
-          secureTextEntry={true}
-          onChangeText={text => onChangeFields('password', text)}
-          value={fields.password}
-        />
-        <View style={{alignItems: 'center', marginTop: 65}}>
+        <View style={styles.form}>
+          <Input
+            label={'Brugernavn'}
+            label_styles={login_styles.label}
+            theme={colors}
+            onChangeText={text => onChangeFields('username', text)}
+            value={fields.username}
+          />
+          <Input
+            label={'Adgangskode'}
+            label_styles={login_styles.label}
+            theme={colors}
+            secureTextEntry={true}
+            onChangeText={text => onChangeFields('password', text)}
+            value={fields.password}
+            clearTextOnFocus
+          />
+        </View>
+        <View style={{alignItems: 'center', marginTop: 45}}>
           <Button text={'Gem'} theme={colors} onPress={submit} />
         </View>
       </View>

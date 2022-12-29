@@ -48,7 +48,7 @@ const Header = ({
             <View
               style={{
                 position: 'absolute',
-                top: '13%',
+                top: '23%',
                 alignSelf: 'center',
               }}>
               <Profile profilePhoto={profilePhoto} height={100} width={100} />

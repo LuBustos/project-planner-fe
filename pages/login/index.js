@@ -81,6 +81,7 @@ const Login = props => {
         isGoBack
         title={params.isCreateAccount ? 'Opret bruger' : 'Log ind'}
         title_style={{...styles.second_title, color: colors.text}}
+        arrowTop={'13%'}
       />
       <View style={login_styles.form}>
         <Input

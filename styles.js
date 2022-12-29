@@ -75,7 +75,6 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     ...textStyle('300', 14, 21),
     letterSpacing: 1,
-    color: '#BDBDBD',
   },
   second_title: {
     top: '50%',

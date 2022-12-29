@@ -1,11 +1,8 @@
 import {
   Modal,
-  Pressable,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
   Image,
 } from 'react-native';
@@ -22,21 +19,18 @@ import {
 import ImageSvg from '../../assets/image';
 import Delete from '../../assets/delete';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
-import DropDownPicker from 'react-native-dropdown-picker';
 import {getUsers} from '../../services/user.service';
 import User from '../../assets/user';
+import {InputForm, InputMultilineForm} from './input';
+import SelectForm from './select';
+import {errorMessage, successMessage} from '../../utils/snackbar';
 
-const styles = StyleSheet.create({
+const stylesForm = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     borderRadius: 35,
-    // height: 666,
-    // width: 383,
     height: '100%',
     padding: 20,
-    //     position: "absolute",
-    // top: "5%",
-    // left: "1%",
   },
   title: {
     ...textStyle('700', 20, 30),
@@ -59,9 +53,9 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     color: '#F2994A',
     margin: 5,
-    '&focus': {
-      color: 'red !important',
-    },
+  },
+  item: {
+    margin: 5,
   },
 });
 
@@ -70,86 +64,6 @@ const initial_form = {
   description: '',
   to: [],
   tags: '',
-};
-
-const InputForm = ({label, value, onChange, name}) => {
-  return (
-    <View>
-      {value.length > 0 ? <Text style={styles.label}>{label}</Text> : null}
-      <TextInput
-        onChangeText={text => onChange(name, text)}
-        style={{...styles.input, height: 52}}
-        placeholder={label}
-        value={value}
-      />
-    </View>
-  );
-};
-
-const SelectForm = ({
-  value,
-  label,
-  onChange,
-  name,
-  users,
-  setUsers,
-  owner,
-  setUserValue,
-  userValue,
-  open,
-  setOpen,
-}) => {
-  useEffect(() => {
-    onChange(name, userValue);
-  }, [userValue]);
-
-  return (
-    <>
-      {value.length > 0 ? <Text style={styles.label}>{label}</Text> : null}
-      <DropDownPicker
-        open={open}
-        value={userValue}
-        items={users}
-        setOpen={setOpen}
-        style={{...styles.input, height: 52}}
-        setValue={setUserValue}
-        setItems={setUsers}
-        multiple={true}
-        mode={'BADGE'}
-        autoScroll={true}
-        renderBadgeItem={props => {
-          const {IconComponent, label, value} = props;
-          return (
-            <View style={{margin: 5}} {...props}>
-              <IconComponent />
-              <Text>{owner !== value ? label : '(Mig)'}</Text>
-            </View>
-          );
-        }}
-        dropDownDirection="TOP"
-        dropDownContainerStyle={{
-          ...styles.input,
-        }}
-        // searchable={true}
-      />
-    </>
-  );
-};
-
-const InputMultilineForm = ({label, value, onChange, name}) => {
-  return (
-    <View>
-      {value.length > 0 ? <Text style={styles.label}>{label}</Text> : null}
-      <TextInput
-        style={{...styles.input, height: 100}}
-        placeholder={label}
-        multiline
-        numberOfLines={4}
-        onChangeText={text => onChange(name, text)}
-        value={value}
-      />
-    </View>
-  );
 };
 
 const STATUS_TASK = {
@@ -172,7 +86,6 @@ const Form = ({
   const [openDropwdown, setOpenDropwdown] = useState(false);
   const {imageGallery, openGallery} = useImages();
 
-  //on close setFields(null)
   useEffect(() => {
     getAllUsers();
     if (update) {
@@ -185,9 +98,11 @@ const Form = ({
   const removeTask = async () => {
     const response = await updateTaskStatus(task_id, STATUS_TASK.REMOVED);
     if (response.success) {
-      //Show alert :D
       refreshScreen();
       onClose();
+      successMessage("The task has been removed");
+    }else{
+      errorMessage(response.message)
     }
   };
 
@@ -240,32 +155,58 @@ const Form = ({
     }
   };
 
+  const validateFields = fields => {
+    if (fields.title.length < 2) {
+      return {success: false, message: 'Title too short'};
+    }
+
+    if (fields.title.length > 20) {
+      return {success: false, message: 'Title too long'};
+    }
+
+    if (fields.to.length === 0) {
+      return {success: false, message: 'No users selected'};
+    }
+
+    return {success: true, message: 'good'};
+  };
+
   const submit = async () => {
+    const validation = validateFields(fields);
+    if (validation.success) {
+      const uri =
+        Platform.OS === 'ios'
+          ? imageGallery?.fileUri.replace('file://', '')
+          : imageGallery?.fileUri;
 
-    const uri =
-      Platform.OS === 'ios'
-        ? imageGallery.fileUri.replace('file://', '')
-        : imageGallery.fileUri;
+      const data = {
+        ...fields,
+        created_by: owner,
+        image: uri,
+      };
 
-    const data = {
-      ...fields,
-      created_by: owner,
-      image: uri,
-    };
+      if (!imageGallery) {
+        delete data.image;
+      }
 
-    if (!update) {
-      const response = await createTask(data);
+      let response = {};
+
+      if (!update) {
+        response = await createTask(data);
+      } else {
+        response = await updateTask(data, task_id);
+      }
+
       if (response.success) {
+        successMessage(response.message);
         refreshScreen();
         onClose();
-        //Show messsage, task created sth similar
+      }else{
+        errorMessage(response.message);
       }
+
     } else {
-      const response = await updateTask(data, task_id);
-      if (response.success) {
-        refreshScreen();
-        onClose();
-      }
+      errorMessage(validation.message);
     }
   };
 
@@ -279,7 +220,7 @@ const Form = ({
       transparent={true}
       visible={visible}
       onRequestClose={onClose}>
-      <View style={styles.container}>
+      <View style={stylesForm.container}>
         <View
           style={{
             display: 'flex',
@@ -288,7 +229,7 @@ const Form = ({
             marginBottom: 37,
           }}>
           <View style={{marginLeft: 'auto'}}>
-            <Text style={styles.title}>
+            <Text style={stylesForm.title}>
               {update ? 'Opgave' : 'Opret opgave'}
             </Text>
           </View>
@@ -307,12 +248,14 @@ const Form = ({
               onChange={onChangeFields}
               value={fields.title}
               name={'title'}
+              styles={stylesForm}
             />
             <InputMultilineForm
               label={'Beskrivelse . . .'}
               onChange={onChangeFields}
               value={fields.description}
               name={'description'}
+              styles={stylesForm}
             />
             <SelectForm
               label={'Modtager(e)'}
@@ -326,12 +269,14 @@ const Form = ({
               userValue={userValue}
               setOpen={setOpenDropwdown}
               open={openDropwdown}
+              styles={stylesForm}
             />
             <InputForm
               label={'Tags'}
               onChange={onChangeFields}
               value={fields.tags}
               name={'tags'}
+              styles={stylesForm}
             />
             <View
               style={{
@@ -358,7 +303,6 @@ const Form = ({
             </View>
           </View>
         </TouchableOpacity>
-
         <View
           style={{
             flex: 1,

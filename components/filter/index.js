@@ -21,7 +21,6 @@ const styles_filter = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     borderRadius: 35,
-    // height: '100%',
     width: 351,
     height: 441,
     padding: 20,
@@ -39,7 +38,6 @@ const styles_filter = StyleSheet.create({
     ...textStyle('400', 20, 30),
     textAlign: 'left',
     marginLeft: 10,
-    // color: "#4F4F4F",
   },
 });
 
@@ -160,7 +158,6 @@ const Filter = ({theme, handlerFilters}) => {
           backgroundColor: theme.backgroundInput,
           paddingLeft: 40,
           paddingBottom: 5,
-          // top: -360,
           alignSelf: 'center',
           width: 336,
           height: 43,
