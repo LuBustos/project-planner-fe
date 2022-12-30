@@ -9,6 +9,7 @@ import Gallery from '../../assets/gallery';
 import Camera from '../../assets/camera';
 import {useImages} from '../../hooks';
 import {getUserById, updateAvatar} from '../../services/user.service';
+import t from '../../localization';
 
 const CreateProfile = props => {
   const {
@@ -80,8 +81,7 @@ const CreateProfile = props => {
         }}
         arrowTop={"29%"}
         height="45%"
-        // isGoBack={params.isCreateAccount ? false : true}
-        title={'Profilbillede'}
+        title={t.profilbillede}
         title_style={{...styles.second_title, color: colors.text}}
       />
       <View>
@@ -102,6 +102,7 @@ const CreateProfile = props => {
               borderRadius: 150 / 2,
               alignSelf: 'center',
             }}
+            onError={() => handleImageGallery({fileUri:null})}
           />
         )}
       </View>
@@ -122,7 +123,7 @@ const CreateProfile = props => {
             style={{
               ...styles.icon_text,
             }}>
-            Kamera
+            {t.kamera}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={openGallery}>
@@ -135,12 +136,12 @@ const CreateProfile = props => {
             style={{
               ...styles.icon_text,
             }}>
-            Upload
+            {t.upload}
           </Text>
         </TouchableOpacity>
       </View>
       <View style={{alignItems: 'center', marginTop: 20}}>
-        <Button onPress={submit} text={params.isCreateAccount ? 'Vælg' : 'Gem'} theme={colors} />
+        <Button onPress={submit} text={params.isCreateAccount ? t.vælg : t.gem} theme={colors} />
       </View>
     </View>
   );

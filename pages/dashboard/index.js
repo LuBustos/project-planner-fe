@@ -11,6 +11,7 @@ import {getTask, updateTaskStatus} from '../../services/task.service';
 import {errorMessage, successMessage} from '../../utils/snackbar';
 import {getUserById} from '../../services/user.service';
 import GuestModal from '../../components/modal/guest';
+import t from '../../localization';
 
 const styles = StyleSheet.create({
   title: {
@@ -125,7 +126,7 @@ const Dashboard = props => {
           ListHeaderComponent={() => {
             return tasks.length > 0 ? (
               <Text style={{...styles.title, color: colors.backgroundButton}}>
-                Mine opgaver
+                {t.mine_opgaver}
               </Text>
             ) : null;
           }}

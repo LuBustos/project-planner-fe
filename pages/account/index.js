@@ -9,6 +9,7 @@ import {getUserById, updateUser} from '../../services/user.service.js';
 import {errorMessage} from '../../utils/snackbar';
 import login_styles from '../login/styles.scss';
 import {textStyle} from '../../mixin';
+import t from '../../localization';
 
 const styles = StyleSheet.create({
   title: {
@@ -94,18 +95,18 @@ const Account = props => {
       />
       <View style={styles.container}>
         <Text style={{...styles.title, color: colors.backgroundButton}}>
-          Konto
+          {t.konto}
         </Text>
         <View style={styles.form}>
           <Input
-            label={'Brugernavn'}
+            label={t.brugernavn}
             label_styles={login_styles.label}
             theme={colors}
             onChangeText={text => onChangeFields('username', text)}
             value={fields.username}
           />
           <Input
-            label={'Adgangskode'}
+            label={t.adgangskode}
             label_styles={login_styles.label}
             theme={colors}
             secureTextEntry={true}
@@ -115,7 +116,7 @@ const Account = props => {
           />
         </View>
         <View style={{alignItems: 'center', marginTop: 45}}>
-          <Button text={'Gem'} theme={colors} onPress={submit} />
+          <Button text={t.gem} theme={colors} onPress={submit} />
         </View>
       </View>
     </View>

@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome.js';
 import {useEffect, useState} from 'react';
 import {useDebounce} from 'use-debounce';
 import {useFilters} from '../../hooks';
+import t from '../../localization';
 
 const styles_filter = StyleSheet.create({
   container: {
@@ -44,22 +45,22 @@ const styles_filter = StyleSheet.create({
 const filter_options = [
   {
     id: 1,
-    name: 'Gennemførte',
+    name: t.gennemførte,
     value: 1,
   },
   {
     id: 2,
-    name: 'Oprettet af mig',
+    name: t.created_by,
     value: 2,
   },
   {
     id: 3,
-    name: 'Omtaler mig',
+    name: t.omtaler_mig,
     value: 3,
   },
   {
     id: 4,
-    name: 'Med billeder',
+    name: t.med_billeder,
     value: 4,
   },
 ];
@@ -111,7 +112,7 @@ const FilterModal = ({visible, onClose, theme, filterOptions}) => {
             justifyContent: 'flex-end',
             alignItems: 'center',
           }}>
-          <Button text={'Gem'} onPress={() => onClose(options)} theme={theme} />
+          <Button text={t.gem} onPress={() => onClose(options)} theme={theme} />
         </View>
       </View>
     </Modal>
@@ -151,7 +152,7 @@ const Filter = ({theme, handlerFilters}) => {
         <Loop />
       </View>
       <TextInput
-        placeholder="Søg efter opgaver"
+        placeholder={t.placeholder_input}
         style={{
           ...styles.input,
           color: theme.colorInputText,

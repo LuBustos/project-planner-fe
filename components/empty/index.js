@@ -1,6 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import Arrow from '../../assets/arrow';
 import {textStyle} from '../../mixin';
+import t from '../../localization';
 
 const styles = StyleSheet.create({
   title: {
@@ -24,9 +25,9 @@ const styles = StyleSheet.create({
 const EmptyMessage = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Kom i gang</Text>
+      <Text style={styles.title}>{t.empty_dashboard_title}</Text>
       <Text style={styles.description}>
-        Tryk på plusset i hjørnet for at oprette en opgave
+        {t.empty_dashboard_desc}
       </Text>
       <Arrow
         style={{

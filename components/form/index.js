@@ -24,6 +24,7 @@ import User from '../../assets/user';
 import {InputForm, InputMultilineForm} from './input';
 import SelectForm from './select';
 import {errorMessage, successMessage} from '../../utils/snackbar';
+import t from '../../localization';
 
 const stylesForm = StyleSheet.create({
   container: {
@@ -100,9 +101,9 @@ const Form = ({
     if (response.success) {
       refreshScreen();
       onClose();
-      successMessage("The task has been removed");
-    }else{
-      errorMessage(response.message)
+      successMessage('The task has been removed');
+    } else {
+      errorMessage(response.message);
     }
   };
 
@@ -122,6 +123,7 @@ const Form = ({
 
   const getAllUsers = async () => {
     const response = await getUsers();
+    let check = false;
     if (response.success) {
       const userList = response.data.map(user => {
         let user_obj = {
@@ -144,6 +146,9 @@ const Form = ({
                   height: 27,
                   alignSelf: 'center',
                   borderRadius: 150 / 2,
+                }}
+                onError={() => {
+                  user.avatar = null;
                 }}
               />
             ),
@@ -201,10 +206,9 @@ const Form = ({
         successMessage(response.message);
         refreshScreen();
         onClose();
-      }else{
+      } else {
         errorMessage(response.message);
       }
-
     } else {
       errorMessage(validation.message);
     }
@@ -229,9 +233,7 @@ const Form = ({
             marginBottom: 37,
           }}>
           <View style={{marginLeft: 'auto'}}>
-            <Text style={stylesForm.title}>
-              {update ? 'Opgave' : 'Opret opgave'}
-            </Text>
+            <Text style={stylesForm.title}>{update ? t.opgave : t.c_task}</Text>
           </View>
           <TouchableOpacity
             style={{marginLeft: 'auto'}}
@@ -244,21 +246,21 @@ const Form = ({
           activeOpacity={1}>
           <View style={{minHeight: 500}}>
             <InputForm
-              label={'Titel'}
+              label={t.titel}
               onChange={onChangeFields}
               value={fields.title}
               name={'title'}
               styles={stylesForm}
             />
             <InputMultilineForm
-              label={'Beskrivelse . . .'}
+              label={t.beskrivelse}
               onChange={onChangeFields}
               value={fields.description}
               name={'description'}
               styles={stylesForm}
             />
             <SelectForm
-              label={'Modtager(e)'}
+              label={t.modtager}
               value={fields.to}
               name={'to'}
               users={users}
@@ -272,7 +274,7 @@ const Form = ({
               styles={stylesForm}
             />
             <InputForm
-              label={'Tags'}
+              label={t.tags}
               onChange={onChangeFields}
               value={fields.tags}
               name={'tags'}
@@ -311,7 +313,7 @@ const Form = ({
           }}>
           <Button
             onPress={submit}
-            text={update ? 'Gem' : 'Opret'}
+            text={update ? t.gem : t.opret}
             theme={theme}
           />
         </View>

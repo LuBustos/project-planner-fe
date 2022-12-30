@@ -9,6 +9,7 @@ import login_styles from './styles.scss';
 import styles from '../../styles';
 import {createUser, login} from '../../services/user.service.js';
 import {errorMessage} from '../../utils/snackbar';
+import t from '../../localization';
 
 const initial_form = {
   username: '',
@@ -70,6 +71,8 @@ const Login = props => {
     }
   };
 
+  console.log(t.opret_bruger)
+
   return (
     <View>
       <Header
@@ -79,20 +82,20 @@ const Login = props => {
           top: -150,
         }}
         isGoBack
-        title={params.isCreateAccount ? 'Opret bruger' : 'Log ind'}
+        title={params.isCreateAccount ? t.opret_bruger : t.log_ind}
         title_style={{...styles.second_title, color: colors.text}}
         arrowTop={'13%'}
       />
       <View style={login_styles.form}>
         <Input
-          label={'Brugernavn'}
+          label={t.brugernavn}
           label_styles={login_styles.label}
           theme={colors}
           onChangeText={text => onChangeFields('username', text)}
           value={fields.username}
         />
         <Input
-          label={'Adgangskode'}
+          label={t.adgangskode}
           label_styles={login_styles.label}
           theme={colors}
           secureTextEntry={true}
@@ -101,7 +104,7 @@ const Login = props => {
         />
         <View style={{alignItems: 'center', marginTop: 65}}>
           <Button
-            text={params.isCreateAccount ? 'Fortsæt' : 'Log ind'}
+            text={params.isCreateAccount ? t.fortsæt : t.log_ind}
             theme={colors}
             onPress={submit}
           />

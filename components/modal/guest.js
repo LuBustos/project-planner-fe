@@ -3,6 +3,7 @@ import Lock from '../../assets/lock';
 import Button from '../button';
 import {textStyle} from '../../mixin';
 import {useNavigation} from '@react-navigation/native';
+import t from '../../localization';
 
 const styles = StyleSheet.create({
   container: {
@@ -46,11 +47,11 @@ const GuestModal = ({visible, onClose, theme}) => {
       onRequestClose={onClose}>
       <View style={styles.container}>
         <View>
-          <Text style={styles.title}>Hov! </Text>
+          <Text style={styles.title}>{t.hov} </Text>
         </View>
         <View>
           <Text style={styles.text}>
-            Lås op for alle funktioner ved at oprette en bruger
+            {t.guest_subt}
           </Text>
         </View>
         <View style={{margin: 50}}>
@@ -69,14 +70,14 @@ const GuestModal = ({visible, onClose, theme}) => {
         </View>
         <View>
           <Text style={{...styles.text, marginBottom: 8}}>
-            Er du allerede bruger?
+            {t.c_guest}
           </Text>
           <Text style={styles.text}>
-            Log ind
+            {t.log_ind}{' '}
             <Text
               onPress={() => goToLoginScreen(false)}
               style={{...styles.text, color: '#67A9EF'}}>
-              her
+              {t.here}
             </Text>
           </Text>
         </View>

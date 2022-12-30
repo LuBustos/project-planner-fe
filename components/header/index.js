@@ -4,6 +4,7 @@ import Filter from '../filter';
 import Profile from '../profile';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
+import t from '../../localization';
 
 const Header = ({
   title,
@@ -63,7 +64,7 @@ const Header = ({
                     marginTop: 8,
                     marginLeft: 5,
                   }}>
-                  Skift profilbillede
+                  {t.change_profile}
                 </Text>
               </TouchableOpacity>
             </View>

@@ -4,6 +4,7 @@ import SocialMedia from '../../assets/Social Media';
 import styles from '../../styles.js';
 import {useTheme} from '@react-navigation/native';
 import {Button} from '../../components/index'
+import t from '../../localization/index'
 
 
 const Home = props => {
@@ -35,8 +36,8 @@ const Home = props => {
         }}
       />
       <View style={styles.form}>
-        <Button onPress={() => goToLogin(true)} text={'Opret bruger'} theme={colors} />
-        <Button onPress={() => goToLogin(false)} text={'Log ind'} theme={colors} />
+        <Button onPress={() => goToLogin(true)} text={t.opret_bruger} theme={colors} />
+        <Button onPress={() => goToLogin(false)} text={t.log_ind} theme={colors} />
       </View>
     </View>
   );

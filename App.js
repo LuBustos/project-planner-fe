@@ -8,10 +8,12 @@
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Button,
   ImageBackground,
+  NativeModules,
+  Platform,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -35,6 +37,7 @@ import {Home, Login,CreateProfile,Dashboard, Account} from './pages/index';
 import Wave from './assets/Wave.js';
 import styles from './styles';
 import SocialMedia from './assets/Social Media';
+import t from './localization';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
