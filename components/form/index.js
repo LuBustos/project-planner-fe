@@ -25,6 +25,8 @@ import {InputForm, InputMultilineForm} from './input';
 import SelectForm from './select';
 import {errorMessage, successMessage} from '../../utils/snackbar';
 import t from '../../localization';
+import DatePickerField from './date';
+import Tags from './tags';
 
 const stylesForm = StyleSheet.create({
   container: {
@@ -42,10 +44,12 @@ const stylesForm = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 15,
     width: 341,
-    marginBottom: 23,
-    ...textStyle('300', 15, 22),
+    marginBottom: 5,
     paddingLeft: 10,
     paddingBottom: 5,
+  },
+  textDate: {
+    ...textStyle('400', 15, 22),
   },
   label: {
     fontStyle: 'normal',
@@ -65,6 +69,7 @@ const initial_form = {
   description: '',
   to: [],
   tags: '',
+  dueDate: null,
 };
 
 const STATUS_TASK = {
@@ -114,7 +119,7 @@ const Form = ({
         title: response.data.title,
         description: response.data.description,
         to: response.data.users,
-        tags: '',
+        tags: response.data.tags,
       };
       saveAllFields(task);
       setUserValue(task.to);
@@ -123,7 +128,6 @@ const Form = ({
 
   const getAllUsers = async () => {
     const response = await getUsers();
-    let check = false;
     if (response.success) {
       const userList = response.data.map(user => {
         let user_obj = {
@@ -273,12 +277,20 @@ const Form = ({
               open={openDropwdown}
               styles={stylesForm}
             />
-            <InputForm
+            <Tags
               label={t.tags}
               onChange={onChangeFields}
               value={fields.tags}
               name={'tags'}
               styles={stylesForm}
+            />
+            <DatePickerField
+              date={fields.dueDate}
+              label={t.afleveringsdato}
+              name={'dueDate'}
+              onChange={onChangeFields}
+              styles={stylesForm}
+              value={fields.dueDate}
             />
             <View
               style={{

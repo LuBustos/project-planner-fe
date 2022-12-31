@@ -71,8 +71,6 @@ const Login = props => {
     }
   };
 
-  console.log(t.opret_bruger)
-
   return (
     <View>
       <Header

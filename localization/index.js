@@ -36,7 +36,8 @@ let t = new LocalizedStrings({
     c_guest: 'Er du allerede bruger?',
     here: 'her',
     theme: 'Skifte tema', //Should be change theme or sth like that
-    tema: 'tema'
+    tema: 'tema',
+    afleveringsdato: 'Afleveringsdato'
   },
   en_US: {
     opret_bruger: 'Create account',
@@ -73,7 +74,8 @@ let t = new LocalizedStrings({
     fortsæt: 'Continue',
     c_guest: 'Are you already a user?',
     theme: 'Change theme',
-    tema: 'theme'
+    tema: 'theme',
+    afleveringsdato: 'Due date'
   },
 });
 

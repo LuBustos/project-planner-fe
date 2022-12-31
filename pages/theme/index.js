@@ -66,8 +66,6 @@ const Themes = ({handlerThemes, ...props}) => {
     route: {params},
   } = props;
   
-  console.log('p', props);
-
   const goToDashboard = () => {
     navigation.navigate('Dashboard',{
         userId: params.userId,
