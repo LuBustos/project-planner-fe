@@ -8,87 +8,62 @@
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React, { useEffect } from 'react';
+import React, {useState} from 'react';
+import {Text, View, useColorScheme} from 'react-native';
+
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {
-  Button,
-  ImageBackground,
-  NativeModules,
-  Platform,
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import {Home, Login,CreateProfile,Dashboard, Account} from './pages/index';
-import Wave from './assets/Wave.js';
-import styles from './styles';
-import SocialMedia from './assets/Social Media';
-import t from './localization';
-
-/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
- * LTI update could not be added via codemod */
-const Section = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
-
+  Account,
+  CreateProfile,
+  Dashboard,
+  Home,
+  Login,
+  Theme,
+} from './pages/index';
 const Stack = createNativeStackNavigator();
 
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  const MyTheme = {
-    dark: false,
+const themes = {
+  ocean: {
+    colors: {
+      backgroundButton: '#fff3e3',
+      background: '#67a9ef', //backgraound of each screen
+      text: 'black',
+      backgroundInput: '#FFFFFF',
+      colorInputText: 'black',
+      textImage: 'black',
+    },
+  },
+  yellowish: {
+    colors: {
+      backgroundButton: '#F0D773',
+      background: '#F7F2BD', //backgraound of each screen
+      text: '#FFFFFF',
+      backgroundInput: '#FFFFFF',
+      colorInputText: 'black',
+      textImage: '#67A9EF',
+    },
+  },
+  light: {
     colors: {
       backgroundButton: '#67a9ef',
       background: '#fff3e3', //backgraound of each screen
       text: '#FFFFFF',
       backgroundInput: '#FFFFFF',
-      colorInputText: 'black'
+      colorInputText: 'black',
+      textImage: '#67A9EF',
     },
+  },
+};
+
+const App = () => {
+  const [theme, setTheme] = useState(themes['light']);
+
+  const handlerThemes = value => {
+    setTheme(themes[value]);
   };
 
   return (
-    <NavigationContainer theme={MyTheme}>
+    <NavigationContainer theme={theme}>
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{
@@ -99,6 +74,9 @@ const App = () => {
         <Stack.Screen name="Profile" component={CreateProfile} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="Account" component={Account} />
+        <Stack.Screen name="Theme">
+          {props => <Theme {...props} handlerThemes={handlerThemes} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

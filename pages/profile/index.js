@@ -72,6 +72,12 @@ const CreateProfile = props => {
     }
   };
 
+  const goToTheme = () => {
+    navigation.navigate('Theme',{
+      userId: params.userId,
+    });
+  }
+
   return (
     <View>
       <Header
@@ -122,6 +128,7 @@ const CreateProfile = props => {
           <Text
             style={{
               ...styles.icon_text,
+              color: colors.textImage
             }}>
             {t.kamera}
           </Text>
@@ -135,6 +142,7 @@ const CreateProfile = props => {
           <Text
             style={{
               ...styles.icon_text,
+              color: colors.textImage
             }}>
             {t.upload}
           </Text>
@@ -142,6 +150,7 @@ const CreateProfile = props => {
       </View>
       <View style={{alignItems: 'center', marginTop: 20}}>
         <Button onPress={submit} text={params.isCreateAccount ? t.vælg : t.gem} theme={colors} />
+        <Button onPress={goToTheme} theme={colors} text={"Change theme"}/>
       </View>
     </View>
   );

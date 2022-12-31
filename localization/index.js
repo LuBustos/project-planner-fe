@@ -35,6 +35,8 @@ let t = new LocalizedStrings({
     guest_subt: 'Lås op for alle funktioner ved at oprette en bruger',
     c_guest: 'Er du allerede bruger?',
     here: 'her',
+    theme: 'Skifte tema', //Should be change theme or sth like that
+    tema: 'tema'
   },
   en_US: {
     opret_bruger: 'Create account',
@@ -69,7 +71,9 @@ let t = new LocalizedStrings({
     here: 'here',
     placeholder_input: 'Search for tasks',
     fortsæt: 'Continue',
-    c_guest: 'Are you already a user?'
+    c_guest: 'Are you already a user?',
+    theme: 'Change theme',
+    tema: 'theme'
   },
 });
 
