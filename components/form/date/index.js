@@ -2,7 +2,14 @@ import {useState} from 'react';
 import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
-const DatePickerField = ({label, styles, onChange, name, value}) => {
+const DatePickerField = ({
+  label,
+  styles,
+  onChange,
+  name,
+  value,
+  mode = 'date',
+}) => {
   const [open, setOpen] = useState(false);
 
   const today = new Date();
@@ -16,14 +23,20 @@ const DatePickerField = ({label, styles, onChange, name, value}) => {
       '-' +
       date.getFullYear();
 
-    onChange(name, formatDate);
+    if (mode !== "date") {
+      //Check to fix this
+      // const formatTime = date.getHours()+'-'+date.getMinutes()
+      onChange(name, date);
+    } else {
+      onChange(name, formatDate);
+    }
   };
 
   return (
     <View style={{height: 100}}>
       {value ? <Text style={styles.label}>{label}</Text> : null}
       <TouchableOpacity
-        style={{...styles.input, height: 52,padding: 10}}
+        style={{...styles.input, height: 52, padding: 10}}
         onPress={() => setOpen(true)}>
         <TextInput
           style={{...styles.textDate}}
@@ -35,7 +48,7 @@ const DatePickerField = ({label, styles, onChange, name, value}) => {
       <DatePicker
         modal
         date={value ? new Date(value) : new Date(today)}
-        mode="date"
+        mode={mode}
         open={open}
         onConfirm={date => onConfirmModal(date)}
         minimumDate={new Date(today)}

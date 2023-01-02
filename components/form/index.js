@@ -27,6 +27,7 @@ import {errorMessage, successMessage} from '../../utils/snackbar';
 import t from '../../localization';
 import DatePickerField from './date';
 import Tags from './tags';
+import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
 
 const stylesForm = StyleSheet.create({
   container: {
@@ -44,7 +45,7 @@ const stylesForm = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 15,
     width: 341,
-    marginBottom: 5,
+    marginBottom: 10,
     paddingLeft: 10,
     paddingBottom: 5,
   },
@@ -91,6 +92,7 @@ const Form = ({
   const [userValue, setUserValue] = useState([]);
   const [openDropwdown, setOpenDropwdown] = useState(false);
   const {imageGallery, openGallery} = useImages();
+  const [reminder,setReminder] = useState(null);
 
   useEffect(() => {
     getAllUsers();
@@ -100,6 +102,10 @@ const Form = ({
       setUserValue([owner]);
     }
   }, []);
+
+  const handlerReminder = (_,value) => {
+    setReminder(value);
+  }
 
   const removeTask = async () => {
     const response = await updateTaskStatus(task_id, STATUS_TASK.REMOVED);
@@ -207,6 +213,9 @@ const Form = ({
       }
 
       if (response.success) {
+        onCreateTriggerNotification(reminder).catch((error) => {
+          errorMessage(error)
+        });
         successMessage(response.message);
         refreshScreen();
         onClose();
@@ -221,6 +230,28 @@ const Form = ({
   const closeModalWithoutSave = () => {
     onClose();
   };
+
+  async function onCreateTriggerNotification(reminder) {
+    const date = new Date(reminder);
+
+    // Create a time-based trigger
+    const trigger = {
+      type: TriggerType.TIMESTAMP,
+      timestamp: date.getTime(), // fire at 11:10am (10 minutes before meeting)
+    };
+
+    // Create a trigger notification
+    await notifee.createTriggerNotification(
+      {
+        title: fields.title,
+        body: fields.description,
+        android: {
+          channelId: 'your-channel-id',
+        },
+      },
+      trigger,
+    );
+  }
 
   return (
     <Modal
@@ -285,12 +316,19 @@ const Form = ({
               styles={stylesForm}
             />
             <DatePickerField
-              date={fields.dueDate}
               label={t.afleveringsdato}
               name={'dueDate'}
               onChange={onChangeFields}
               styles={stylesForm}
               value={fields.dueDate}
+            />
+            <DatePickerField
+              label={"Reminder"}
+              name={'reminder'}
+              onChange={handlerReminder}
+              styles={stylesForm}
+              value={reminder}
+              mode={"time"}
             />
             <View
               style={{

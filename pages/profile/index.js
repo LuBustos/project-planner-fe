@@ -40,10 +40,10 @@ const CreateProfile = props => {
     }
   };
 
-  const goToDashboard = (refresh) => {
+  const goToDashboard = () => {
     navigation.navigate('Dashboard', {
       userId: params.userId,
-      refreshDashboard: refresh
+      uri: imageGallery.fileUri
     });
   };
 
@@ -65,10 +65,10 @@ const CreateProfile = props => {
       const data = createFormData(imageGallery);
       const response = await updateAvatar(params.userId, data);
       if (response) {
-        goToDashboard(true);
+        goToDashboard(imageGallery.fileUri);
       }
     } else {
-      goToDashboard(false);
+      goToDashboard(imageGallery.fileUri);
     }
   };
 

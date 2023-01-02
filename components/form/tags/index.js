@@ -63,7 +63,7 @@ const Tags = ({label, value, styles, onChange, name}) => {
       {value.length > 0 ? <Text style={styles.label}>{label}</Text> : null}
       <TextInput
         onChangeText={text => addTags(text)}
-        style={{...styles.input, height: 52}}
+        style={{...styles.input, height: 52,marginTop: value.length > 0 ? 5 : 10}}
         placeholder={label}
         value={inputValue}
         onKeyPress={onEnterPress}

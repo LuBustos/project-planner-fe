@@ -7,7 +7,6 @@ import Input from '../../components/input';
 import {useFields} from '../../hooks';
 import {getUserById, updateUser} from '../../services/user.service.js';
 import {errorMessage} from '../../utils/snackbar';
-import login_styles from '../login/styles.scss';
 import {textStyle} from '../../mixin';
 import t from '../../localization';
 
@@ -25,7 +24,13 @@ const styles = StyleSheet.create({
   },
   form: {
     alignSelf: 'center',
-  }
+  },
+  label: {
+    ...textStyle('600', 16, 24),
+    letterSpacing: 2,
+    textAlign: 'left',
+    marginLeft: 22,
+  },
 });
 
 const initial_form = {
@@ -100,23 +105,25 @@ const Account = props => {
         <View style={styles.form}>
           <Input
             label={t.brugernavn}
-            label_styles={login_styles.label}
+            label_styles={styles.label}
             theme={colors}
             onChangeText={text => onChangeFields('username', text)}
             value={fields.username}
+            testID={'username_test'}
           />
           <Input
             label={t.adgangskode}
-            label_styles={login_styles.label}
+            label_styles={styles.label}
             theme={colors}
             secureTextEntry={true}
             onChangeText={text => onChangeFields('password', text)}
             value={fields.password}
             clearTextOnFocus
+            testID={'password_test'}
           />
         </View>
         <View style={{alignItems: 'center', marginTop: 45}}>
-          <Button text={t.gem} theme={colors} onPress={submit} />
+          <Button text={t.gem} theme={colors} onPress={submit} testID={'submit_test'}/>
         </View>
       </View>
     </View>

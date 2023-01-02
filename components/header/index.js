@@ -31,7 +31,6 @@ const Header = ({
   isProfile = false,
   isGoBack = false,
   isAccount = false,
-  isTheme = true,
   arrowTop = '27%',
 }) => {
   const {navigate, goBack} = useNavigation();

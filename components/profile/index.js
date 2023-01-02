@@ -1,10 +1,13 @@
 import {Image, TouchableOpacity, View} from 'react-native';
 import User from '../../assets/user';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Profile = ({onPress, profilePhoto, width = 51, height = 51}) => {
+  const [profile,setProfile] = useState(null);
 
-  const [profile,setProfile] = useState(profilePhoto);
+  useEffect(() => {
+    setProfile(profilePhoto)
+  },[profilePhoto])
 
   return (
     <View>

@@ -24,11 +24,13 @@ const styles = StyleSheet.create({
 
 const COMPLETED = 2;
 
+//try to refactor.
+
 const Dashboard = props => {
   const {
     route: {params},
   } = props;
-  const {refreshDashboard} = params
+  const {uri = null} = params
   const {colors} = useTheme();
   const [tasks, setTasks] = useState([]);
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -52,7 +54,7 @@ const Dashboard = props => {
         getProfile(params.userId),
       );
     }
-  }, [refresh, filterOptions,refreshDashboard]);
+  }, [refresh, filterOptions,uri]);
 
   const getAllTask = async id => {
     const response = await getTask(id, filterOptions); //we should transform this in a post!
@@ -111,6 +113,7 @@ const Dashboard = props => {
       />
       <View style={{flex: 1, marginTop: -250}}>
         <FlatList
+          testID='flatlist_test'
           data={tasks}
           renderItem={({item}) => (
             <TextBox

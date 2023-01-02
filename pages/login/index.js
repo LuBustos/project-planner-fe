@@ -1,15 +1,29 @@
 import {useTheme} from '@react-navigation/native';
 import React from 'react';
-import {View} from 'react-native';
+import {View,StyleSheet} from 'react-native';
 import {Button} from '../../components';
 import Header from '../../components/header';
 import Input from '../../components/input';
 import {useFields} from '../../hooks';
-import login_styles from './styles.scss';
 import styles from '../../styles';
 import {createUser, login} from '../../services/user.service.js';
 import {errorMessage} from '../../utils/snackbar';
 import t from '../../localization';
+
+const login_styles = StyleSheet.create({
+  label: {
+    fontSize: 16,
+    fontWeight: "600",
+    lineHeight: 24,
+    letterSpacing: 2,
+    textAlign: "left",
+    marginLeft: 22,
+  },
+  form: {
+    marginTop: -100,
+    padding: 20
+  },
+});
 
 const initial_form = {
   username: '',
