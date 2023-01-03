@@ -1,10 +1,10 @@
-import {FlatList, View, Text} from 'react-native';
-import Header from '../../components/header';
-import {Button} from '../../components';
-import styles from '../../styles';
 import {useTheme} from '@react-navigation/native';
+import {FlatList, View} from 'react-native';
+import {Button} from '../../components';
+import Header from '../../components/header';
 import t from '../../localization';
-import {boxShadow, textStyle} from '../../mixin';
+import {boxShadow} from '../../mixin';
+import styles from '../../styles';
 
 const themes = [
   {
@@ -65,12 +65,12 @@ const Themes = ({handlerThemes, ...props}) => {
     navigation,
     route: {params},
   } = props;
-  
+
   const goToDashboard = () => {
-    navigation.navigate('Dashboard',{
-        userId: params.userId,
-    })
-  }
+    navigation.navigate('Dashboard', {
+      userId: params.userId,
+    });
+  };
 
   return (
     <View>
@@ -93,7 +93,7 @@ const Themes = ({handlerThemes, ...props}) => {
           )}
         />
         <View style={{alignSelf: 'center'}}>
-          <Button theme={colors} text={t.gem} onPress={goToDashboard}/>
+          <Button theme={colors} text={t.gem} onPress={goToDashboard} />
         </View>
       </View>
     </View>

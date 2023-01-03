@@ -81,7 +81,7 @@ const Login = props => {
         }
       }
     }else{
-      errorMessage('Password or username empty')
+      errorMessage(t.pass_user_empty)
     }
   };
 

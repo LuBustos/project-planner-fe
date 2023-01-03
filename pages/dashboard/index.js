@@ -73,15 +73,12 @@ const Dashboard = props => {
 
   const getAllTask = async id => {
     try {
-      console.log('HOLA?');
-      const response = await getTask(id, filterOptions); //we should transform this in a post!
+      const response = await getTask(id, filterOptions);
       saveTasks(response.data);
-      if (response.overdateTasks > 0) {
-        console.log('test');
-        ///Add translations
+      if (response.overdueTask > 0) {
         await onDisplayNotification(
-          'You have overdate tasks',
-          `you have ${response.overdateTasks} overdate tasks to complete`,
+          t.overdue_tasks,
+          `${t.you_have} ${response.overdueTask} ${t.overdue_to_complete}`,
         );
       }
     } catch (error) {
@@ -129,7 +126,7 @@ const Dashboard = props => {
             <TextBox
               onPress={() => openCreateOrUpdateTask(true, item.id)}
               onCompleteTask={() => completeTask(item.id)}
-              overdate={item.overdate}
+              overdue={item.overdue}
               onReminderTask={() => handlerOpenReminderModal(item)}>
               {item.title}
             </TextBox>

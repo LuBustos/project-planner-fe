@@ -1,14 +1,12 @@
-import {Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import Lock from '../../assets/lock';
-import Button from '../button';
-import {textStyle} from '../../mixin';
-import {useNavigation} from '@react-navigation/native';
-import t from '../../localization';
-import Icon from 'react-native-vector-icons/FontAwesome.js';
-import DatePickerField from '../form/date';
 import {useState} from 'react';
-import {errorMessage, successMessage} from '../../utils/snackbar';
+import {Modal, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome.js';
+import t from '../../localization';
+import {textStyle} from '../../mixin';
 import {onCreateTriggerNotification} from '../../utils/notify';
+import {errorMessage, successMessage} from '../../utils/snackbar';
+import Button from '../button';
+import DatePickerField from '../form/date';
 
 const styles = StyleSheet.create({
   container: {
@@ -58,10 +56,9 @@ const ReminderModal = ({visible, onClose, theme, fields}) => {
 
   const onSubmit = async () => {
     try {
-        console.log(reminder,fields)
       const response = await onCreateTriggerNotification(reminder, fields);
       if (response) {
-        successMessage('The reminder was saved it');
+        successMessage(t.reminder_saved);
         onClose();
       }
     } catch (error) {

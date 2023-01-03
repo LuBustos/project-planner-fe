@@ -7,16 +7,16 @@ const TextBox = ({
   children,
   onCompleteTask,
   onReminderTask,
-  overdate,
+  overdue,
   ...props
 }) => {
   return (
     <TouchableOpacity {...props} testID={'card_test'}>
       <View style={styles.cards}>
-        {overdate ? (
+        {overdue ? (
           <View style={{display: 'flex', flexDirection: 'column'}}>
             <Text style={{...styles.textCards}}>{children}</Text>
-            <TagLabel name={'overdate'} width={70} />
+            <TagLabel name={'overdue'} width={70} />
           </View>
         ) : (
           <Text style={{...styles.textCards}}>{children}</Text>

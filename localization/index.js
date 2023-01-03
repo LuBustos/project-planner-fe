@@ -37,7 +37,12 @@ let t = new LocalizedStrings({
     here: 'her',
     theme: 'Skifte tema', //Should be change theme or sth like that
     tema: 'tema',
-    afleveringsdato: 'Afleveringsdato'
+    afleveringsdato: 'Afleveringsdato',
+    overdue_tasks: 'Du har forfaldne opgaver',
+    you_have: 'Du har',
+    overdue_to_complete: 'forfaldne opgaver at udføre',
+    reminder_saved: 'Påmindelsen blev gemt',
+    pass_user_empty: 'Adgangskode eller brugernavn er tomt'
   },
   en_US: {
     opret_bruger: 'Create account',
@@ -75,7 +80,12 @@ let t = new LocalizedStrings({
     c_guest: 'Are you already a user?',
     theme: 'Change theme',
     tema: 'theme',
-    afleveringsdato: 'Due date'
+    afleveringsdato: 'Due date',
+    overdue_tasks: 'You have overdue tasks',
+    you_have: 'You have',
+    overdue_to_complete:'overdue tasks to complete',
+    reminder_saved: 'The reminder was saved',
+    pass_user_empty: 'Password or username empty'
   },
 });
 
