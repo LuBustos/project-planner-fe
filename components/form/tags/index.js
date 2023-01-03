@@ -3,6 +3,33 @@ import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import {errorMessage} from '../../../utils/snackbar';
 
+export const TagLabel = ({name, isIcon = false, width = 'auto'}) => {
+  return (
+    <View
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        backgroundColor: '#e6e6ea',
+        borderRadius: 150 / 2,
+        width: name.length < 5 ? 40 : width,
+        marginLeft: 10,
+      }}
+      key={`${name}-view`}>
+      {isIcon ? (
+        <Icon
+          name={'close'}
+          style={{
+            marginTop: 2,
+          }}
+          key={`${name}-icon`}
+        />
+      ) : null}
+      <Text key={`${name}-text`} style={{marginLeft: 6}}>{name}</Text>
+    </View>
+  );
+};
+
 const Tags = ({label, value, styles, onChange, name}) => {
   const [tags, setTags] = useState([]);
   const pressedEnter = useRef(false);
@@ -39,12 +66,11 @@ const Tags = ({label, value, styles, onChange, name}) => {
       pressedEnter.current = false;
       if (tags.length < 3) {
         const search = tags.filter(x => x.name === value)[0];
-        if (!search){
-            setTags([...tags, {name: value, id: tags.length + 1}]);
-        }else{
-            errorMessage('This tags already exist')
+        if (!search) {
+          setTags([...tags, {name: value, id: tags.length + 1}]);
+        } else {
+          errorMessage('This tags already exist');
         }
-        
       } else {
         errorMessage('Too much tags');
       }
@@ -63,7 +89,11 @@ const Tags = ({label, value, styles, onChange, name}) => {
       {value.length > 0 ? <Text style={styles.label}>{label}</Text> : null}
       <TextInput
         onChangeText={text => addTags(text)}
-        style={{...styles.input, height: 52,marginTop: value.length > 0 ? 5 : 10}}
+        style={{
+          ...styles.input,
+          height: 52,
+          marginBottom: value.length > 0 ? 0 : 10,
+        }}
         placeholder={label}
         value={inputValue}
         onKeyPress={onEnterPress}
@@ -78,32 +108,11 @@ const Tags = ({label, value, styles, onChange, name}) => {
         {tags.length > 0
           ? tags.map((tag, index) => {
               return (
-                <>
-                  <TouchableOpacity
-                    key={index + 2}
-                    onPress={() => removeTags(tag.id)}>
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        backgroundColor: '#e6e6ea',
-                        borderRadius: 150 / 2,
-                        width: tag.name.length < 5 ? 40 : 'auto',
-                        marginLeft: 10,
-                      }}
-                      key={index}>
-                      <Icon
-                        name={'close'}
-                        key={index + 3}
-                        style={{
-                          marginTop: 2,
-                        }}
-                      />
-                      <Text key={index + 1}>{tag.name}</Text>
-                    </View>
-                  </TouchableOpacity>
-                </>
+                <TouchableOpacity
+                  key={index + 2}
+                  onPress={() => removeTags(tag.id)}>
+                  <TagLabel name={tag.name} isIcon={true} key={index} />
+                </TouchableOpacity>
               );
             })
           : null}

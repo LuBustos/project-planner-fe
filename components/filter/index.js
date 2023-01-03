@@ -119,7 +119,7 @@ const FilterModal = ({visible, onClose, theme, filterOptions}) => {
   );
 };
 
-const Filter = ({theme, handlerFilters}) => {
+const Filter = ({theme, handlerFilters,filters}) => {
   const {
     closeFilterModal,
     filterMessageDebounced,
@@ -130,10 +130,12 @@ const Filter = ({theme, handlerFilters}) => {
   } = useFilters();
 
   useEffect(() => {
-    handlerFilters({
-      message: filterMessageDebounced,
-      options: filterOptions,
-    });
+    if (filterOptions.length > 0 || filterMessageDebounced != null || filters != null) {
+      handlerFilters({
+        message: filterMessageDebounced,
+        options: filterOptions,
+      });
+    }
   }, [filterMessageDebounced, filterOptions]);
 
   return (

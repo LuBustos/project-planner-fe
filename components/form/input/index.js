@@ -19,7 +19,7 @@ export const InputMultilineForm = ({label, value, onChange, name,styles}) => {
     <View>
       {value.length > 0 ? <Text style={styles.label}>{label}</Text> : null}
       <TextInput
-        style={{...styles.input, height: 100}}
+        style={{...styles.input, height: 100,marginBottom: value.length > 0 ? 0 : 10}}
         placeholder={label}
         multiline
         numberOfLines={4}

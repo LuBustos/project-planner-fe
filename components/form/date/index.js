@@ -23,9 +23,7 @@ const DatePickerField = ({
       '-' +
       date.getFullYear();
 
-    if (mode !== "date") {
-      //Check to fix this
-      // const formatTime = date.getHours()+'-'+date.getMinutes()
+    if (mode !== 'date') {
       onChange(name, date);
     } else {
       onChange(name, formatDate);
@@ -33,16 +31,23 @@ const DatePickerField = ({
   };
 
   return (
-    <View style={{height: 100}}>
+    <View style={{height: value ? 90 : 70}}>
       {value ? <Text style={styles.label}>{label}</Text> : null}
       <TouchableOpacity
         style={{...styles.input, height: 52, padding: 10}}
         onPress={() => setOpen(true)}>
         <TextInput
           style={{...styles.textDate}}
-          value={value}
+          value={
+            value
+              ? mode != 'date'
+                ? new Date(value).toLocaleTimeString()
+                : value
+              : null
+          }
           editable={false}
           placeholder={label}
+          onPressIn={() => setOpen(true)}
         />
       </TouchableOpacity>
       <DatePicker

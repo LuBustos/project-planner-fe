@@ -9,11 +9,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {Text, View, useColorScheme} from 'react-native';
-// import {Notifications} from 'react-native-notifications';
-import notifee from '@notifee/react-native';
-
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {
   Account,
   CreateProfile,
@@ -57,35 +52,8 @@ const themes = {
   },
 };
 
-async function onDisplayNotification() {
-  // Request permissions (required for iOS)
-  await notifee.requestPermission()
-
-  // Create a channel (required for Android)
-  const channelId = await notifee.createChannel({
-    id: 'default',
-    name: 'Default Channel',
-  });
-
-  notifee.displayNotification({
-    title: 'Foreground service',
-    body: 'This notification will exist for the lifetime of the service runner',
-  });
-
-  // notifee.registerForegroundService((notification) => {
-  //   console.log("Hola?")
-  //   return new Promise(() => {
-  //     // Long running task...
-  //   });
-  // });
-}
-
 const App = () => {
   const [theme, setTheme] = useState(themes['light']);
-
-  useEffect(() => {
-      onDisplayNotification();
-  },[])
 
   const handlerThemes = value => {
     setTheme(themes[value]);

@@ -1,6 +1,6 @@
 //Si aparece el test siendo usuario "GUEST"
 import {render} from '@testing-library/react-native';
-import GuestModal from '../guest';
+import ReminderModal from '../reminder';
 
 const theme = {
     
@@ -9,8 +9,8 @@ const theme = {
 const onClose = jest.fn()
 const visible = true
 
-test('render GuestModal without errors', () => {
-  wrapper = render(<GuestModal onClose={onClose} visible={visible} theme={theme} />);
+test('render ReminderModal without errors', () => {
+  wrapper = render(<ReminderModal onClose={onClose} visible={visible} theme={theme} />);
 
   expect(wrapper).toBeDefined();
 });

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  ScrollView,
 } from 'react-native';
 import {textStyle} from '../../mixin';
 import Button from '../button';
@@ -27,7 +28,7 @@ import {errorMessage, successMessage} from '../../utils/snackbar';
 import t from '../../localization';
 import DatePickerField from './date';
 import Tags from './tags';
-import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
+import {onCreateTriggerNotification} from '../../utils/notify';
 
 const stylesForm = StyleSheet.create({
   container: {
@@ -53,10 +54,7 @@ const stylesForm = StyleSheet.create({
     ...textStyle('400', 15, 22),
   },
   label: {
-    fontStyle: 'normal',
-    fontWeight: '600',
-    fontSize: 15,
-    lineHeight: 22,
+    ...textStyle('600', 15, 22),
     color: '#F2994A',
     margin: 5,
   },
@@ -88,11 +86,10 @@ const Form = ({
   task_id,
 }) => {
   const {fields, onChangeFields, saveAllFields} = useFields(initial_form);
+  const {imageGallery, openGallery} = useImages();
   const [users, setUsers] = useState([]);
   const [userValue, setUserValue] = useState([]);
   const [openDropwdown, setOpenDropwdown] = useState(false);
-  const {imageGallery, openGallery} = useImages();
-  const [reminder,setReminder] = useState(null);
 
   useEffect(() => {
     getAllUsers();
@@ -102,11 +99,6 @@ const Form = ({
       setUserValue([owner]);
     }
   }, []);
-
-  const handlerReminder = (_,value) => {
-    setReminder(value);
-  }
-
   const removeTask = async () => {
     const response = await updateTaskStatus(task_id, STATUS_TASK.REMOVED);
     if (response.success) {
@@ -126,6 +118,7 @@ const Form = ({
         description: response.data.description,
         to: response.data.users,
         tags: response.data.tags,
+        dueDate: response.data.dueDate
       };
       saveAllFields(task);
       setUserValue(task.to);
@@ -213,9 +206,6 @@ const Form = ({
       }
 
       if (response.success) {
-        onCreateTriggerNotification(reminder).catch((error) => {
-          errorMessage(error)
-        });
         successMessage(response.message);
         refreshScreen();
         onClose();
@@ -230,28 +220,6 @@ const Form = ({
   const closeModalWithoutSave = () => {
     onClose();
   };
-
-  async function onCreateTriggerNotification(reminder) {
-    const date = new Date(reminder);
-
-    // Create a time-based trigger
-    const trigger = {
-      type: TriggerType.TIMESTAMP,
-      timestamp: date.getTime(), // fire at 11:10am (10 minutes before meeting)
-    };
-
-    // Create a trigger notification
-    await notifee.createTriggerNotification(
-      {
-        title: fields.title,
-        body: fields.description,
-        android: {
-          channelId: 'your-channel-id',
-        },
-      },
-      trigger,
-    );
-  }
 
   return (
     <Modal
@@ -322,14 +290,6 @@ const Form = ({
               styles={stylesForm}
               value={fields.dueDate}
             />
-            <DatePickerField
-              label={"Reminder"}
-              name={'reminder'}
-              onChange={handlerReminder}
-              styles={stylesForm}
-              value={reminder}
-              mode={"time"}
-            />
             <View
               style={{
                 display: 'flex',
@@ -343,6 +303,7 @@ const Form = ({
                   }}
                 />
               </TouchableOpacity>
+
               {update ? (
                 <TouchableOpacity onPress={removeTask}>
                   <Delete

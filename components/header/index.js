@@ -27,6 +27,7 @@ const Header = ({
   userId,
   profilePhoto,
   handlerFilters,
+  filters,
   isFilter = false,
   isProfile = false,
   isGoBack = false,
@@ -88,7 +89,7 @@ const Header = ({
                 top: '20%',
                 alignSelf: 'center',
               }}>
-              <Filter theme={theme} handlerFilters={handlerFilters} />
+              <Filter theme={theme} handlerFilters={handlerFilters} filters={filters}/>
             </View>
           ) : null}
           {isGoBack ? (
