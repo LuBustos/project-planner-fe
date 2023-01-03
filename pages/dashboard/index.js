@@ -1,7 +1,7 @@
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Header from '../../components/header';
 import {useTheme} from '@react-navigation/native';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {TextBox} from '../../components/';
 import {textStyle} from '../../mixin';
 import EmptyMessage from '../../components/empty';
@@ -15,6 +15,8 @@ import t from '../../localization';
 import {useDashboard} from '../../hooks';
 import {onDisplayNotification} from '../../utils/notify';
 import ReminderModal from '../../components/modal/reminder';
+import { getData } from '../../utils/storage';
+import CompleteAllTaskMessage from '../../components/complete';
 
 const styles = StyleSheet.create({
   title: {
@@ -51,6 +53,7 @@ const Dashboard = props => {
     closeReminderModal,
     openReminderModal,
   } = useDashboard();
+  const [user,setUser] = useState(null);
 
   useEffect(() => {
     if (!params.userId) {
@@ -68,8 +71,14 @@ const Dashboard = props => {
         getAllTask(params.userId, filterOptions),
         getProfile(params.userId),
       );
+      getDataFromStorage()
     }
   }, [refresh, filterOptions]);
+
+  const getDataFromStorage = async () => {
+    const data = await getData();
+    setUser(data);
+  }
 
   const getAllTask = async id => {
     try {
@@ -118,7 +127,7 @@ const Dashboard = props => {
         refreshScreen={refreshScreen}
         filters={filterOptions}
       />
-      <View style={{flex: 1, marginTop: -250}}>
+      <View style={{flex: 1, marginTop: -250,alignSelf: 'center'}}>
         <FlatList
           testID="flatlist_test"
           data={tasks}
@@ -133,7 +142,7 @@ const Dashboard = props => {
           )} //Call box
           keyExtractor={item => item.id}
           ListEmptyComponent={() => {
-            return <EmptyMessage />; //Call empty message
+            return user?.isFirstTime ? <EmptyMessage /> : <CompleteAllTaskMessage />; //Call empty message
           }}
           ListHeaderComponent={() => {
             return tasks.length > 0 ? (

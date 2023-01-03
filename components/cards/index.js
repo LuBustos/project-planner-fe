@@ -2,6 +2,7 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import styles from '../../styles.js';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import {TagLabel} from '../form/tags/index.js';
+import t from '../../localization/index.js';
 
 const TextBox = ({
   children,
@@ -16,7 +17,7 @@ const TextBox = ({
         {overdue ? (
           <View style={{display: 'flex', flexDirection: 'column'}}>
             <Text style={{...styles.textCards}}>{children}</Text>
-            <TagLabel name={'overdue'} width={70} />
+            <TagLabel name={t.overdue} width={70} />
           </View>
         ) : (
           <Text style={{...styles.textCards}}>{children}</Text>

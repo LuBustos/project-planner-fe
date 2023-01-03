@@ -22,7 +22,7 @@ const Home = props => {
     <View>
       <Wave
         style={{
-          left: -70,
+          left: -75,
           top: -10,
         }}
       />

@@ -42,11 +42,17 @@ let t = new LocalizedStrings({
     you_have: 'Du har',
     overdue_to_complete: 'forfaldne opgaver at udføre',
     reminder_saved: 'Påmindelsen blev gemt',
-    pass_user_empty: 'Adgangskode eller brugernavn er tomt'
+    pass_user_empty: 'Adgangskode eller brugernavn er tomt',
+    change_theme: 'Skift tema',
+    reminder: 'Påmindelse',
+    overdue: 'forsinket',
+    complete_dashboard_title: 'Godt klaret!',
+    complete_dashboard_desc: 'Du har ikke flere opgaver',
+    log_ud: 'Log ud'
   },
   en_US: {
     opret_bruger: 'Create account',
-    log_ind: 'Log in',
+    log_ind: 'Sign in',
     brugernavn: 'Username',
     adgangskode: 'Password',
     profilbillede: 'Profile',
@@ -85,7 +91,13 @@ let t = new LocalizedStrings({
     you_have: 'You have',
     overdue_to_complete:'overdue tasks to complete',
     reminder_saved: 'The reminder was saved',
-    pass_user_empty: 'Password or username empty'
+    reminder: 'Reminder',
+    pass_user_empty: 'Password or username empty',
+    change_theme: 'Change theme',
+    overdue: 'overdue',
+    complete_dashboard_title: 'Well done!',
+    complete_dashboard_desc: 'You have no more tasks',
+    log_ud: 'Sign out'
   },
 });
 

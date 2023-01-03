@@ -28,7 +28,7 @@ import {errorMessage, successMessage} from '../../utils/snackbar';
 import t from '../../localization';
 import DatePickerField from './date';
 import Tags from './tags';
-import {onCreateTriggerNotification} from '../../utils/notify';
+import { updateData } from '../../utils/storage';
 
 const stylesForm = StyleSheet.create({
   container: {
@@ -206,6 +206,7 @@ const Form = ({
       }
 
       if (response.success) {
+        await updateData();
         successMessage(response.message);
         refreshScreen();
         onClose();
@@ -247,7 +248,7 @@ const Form = ({
         <TouchableOpacity
           onPress={() => setOpenDropwdown(false)}
           activeOpacity={1}>
-          <View style={{minHeight: 500}}>
+          <View style={{minHeight: 500,alignSelf:'center'}}>
             <InputForm
               label={t.titel}
               onChange={onChangeFields}

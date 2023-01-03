@@ -81,7 +81,7 @@ const ReminderModal = ({visible, onClose, theme, fields}) => {
             marginBottom: 37,
           }}>
           <View style={{marginLeft: 'auto'}}>
-            <Text style={styles.title}>{'Reminder'}</Text>
+            <Text style={styles.title}>{t.reminder}</Text>
           </View>
           <TouchableOpacity style={{marginLeft: 'auto'}} onPress={onClose}>
             <Icon name={'close'} size={25} />
@@ -89,7 +89,7 @@ const ReminderModal = ({visible, onClose, theme, fields}) => {
         </View>
         <View style={{alignSelf: 'center'}}>
           <DatePickerField
-            label={'Reminder'}
+            label={t.reminder}
             name={'reminder'}
             onChange={handlerReminder}
             styles={styles}

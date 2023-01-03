@@ -32,7 +32,7 @@ const CreateProfile = props => {
   const getProfile = async () => {
     try {
       const response = await getUserById(params.userId);
-      if(response.data.avatar){
+      if (response.data.avatar) {
         handleImageGallery({uri: response.data.avatar});
       }
     } catch (error) {
@@ -40,10 +40,10 @@ const CreateProfile = props => {
     }
   };
 
-  const goToDashboard = () => {
+  const goToDashboard = uri => {
     navigation.navigate('Dashboard', {
       userId: params.userId,
-      uri: imageGallery.fileUri
+      uri: uri,
     });
   };
 
@@ -61,32 +61,31 @@ const CreateProfile = props => {
   };
 
   const submit = async () => {
-    if (imageGallery && imageGallery.fileUri) {
+    if (imageGallery && imageGallery?.fileUri) {
       const data = createFormData(imageGallery);
       const response = await updateAvatar(params.userId, data);
       if (response) {
         goToDashboard(imageGallery.fileUri);
       }
     } else {
-      goToDashboard(imageGallery.fileUri);
+      goToDashboard(null);
     }
   };
 
   const goToTheme = () => {
-    navigation.navigate('Theme',{
+    navigation.navigate('Theme', {
       userId: params.userId,
     });
-  }
+  };
 
   return (
-    <View>
+    <View style={{flex: 1, height: '100%'}}>
       <Header
         header_style={{
           left: -55,
           top: -150,
         }}
-        arrowTop={"29%"}
-        height="45%"
+        height="35%"
         title={t.profilbillede}
         title_style={{...styles.second_title, color: colors.text}}
       />
@@ -108,7 +107,7 @@ const CreateProfile = props => {
               borderRadius: 150 / 2,
               alignSelf: 'center',
             }}
-            onError={() => handleImageGallery({fileUri:null})}
+            onError={() => handleImageGallery({fileUri: null})}
           />
         )}
       </View>
@@ -128,7 +127,7 @@ const CreateProfile = props => {
           <Text
             style={{
               ...styles.icon_text,
-              color: colors.textImage
+              color: colors.textImage,
             }}>
             {t.kamera}
           </Text>
@@ -142,15 +141,19 @@ const CreateProfile = props => {
           <Text
             style={{
               ...styles.icon_text,
-              color: colors.textImage
+              color: colors.textImage,
             }}>
             {t.upload}
           </Text>
         </TouchableOpacity>
       </View>
       <View style={{alignItems: 'center', marginTop: 20}}>
-        <Button onPress={submit} text={params.isCreateAccount ? t.vælg : t.gem} theme={colors} />
-        <Button onPress={goToTheme} theme={colors} text={"Change theme"}/>
+        <Button
+          onPress={submit}
+          text={params.isCreateAccount ? t.vælg : t.gem}
+          theme={colors}
+        />
+        <Button onPress={goToTheme} theme={colors} text={t.change_theme} />
       </View>
     </View>
   );

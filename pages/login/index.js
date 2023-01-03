@@ -1,27 +1,29 @@
 import {useTheme} from '@react-navigation/native';
 import React from 'react';
-import {View,StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Button} from '../../components';
 import Header from '../../components/header';
 import Input from '../../components/input';
 import {useFields} from '../../hooks';
-import styles from '../../styles';
-import {createUser, login} from '../../services/user.service.js';
-import {errorMessage} from '../../utils/snackbar';
 import t from '../../localization';
+import {createUser, login} from '../../services/user.service.js';
+import styles from '../../styles';
+import {errorMessage} from '../../utils/snackbar';
+import {saveData} from '../../utils/storage';
 
 const login_styles = StyleSheet.create({
   label: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     lineHeight: 24,
     letterSpacing: 2,
-    textAlign: "left",
+    textAlign: 'left',
     marginLeft: 22,
   },
   form: {
     marginTop: -100,
-    padding: 20
+    padding: 20,
+    alignSelf: 'center',
   },
 });
 
@@ -38,13 +40,18 @@ const Login = props => {
     navigation,
   } = props;
 
-  const goTo = id => {
+  const goTo = async id => {
     cleanFields();
+    await saveData(id, params.isCreateAccount ? true : false);
     if (params.isCreateAccount) {
-      navigation.navigate('Profile', {
-        userId: id,
-        isCreateAccount: true,
-      });
+      try {
+        navigation.navigate('Profile', {
+          userId: id,
+          isCreateAccount: true,
+        });
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       navigation.navigate('Dashboard', {
         userId: id,
@@ -52,15 +59,15 @@ const Login = props => {
     }
   };
 
-  const isEmpty = (text) => text.length === 0 ? true : false
+  const isEmpty = text => (text.length === 0 ? true : false);
 
   const validation = () => {
-    const {username,password} = fields
-    if(!isEmpty(username) && !isEmpty(password)){
+    const {username, password} = fields;
+    if (!isEmpty(username) && !isEmpty(password)) {
       return true;
     }
 
-    return false
+    return false;
   };
 
   const submit = async () => {
@@ -80,8 +87,8 @@ const Login = props => {
           errorMessage(response.message);
         }
       }
-    }else{
-      errorMessage(t.pass_user_empty)
+    } else {
+      errorMessage(t.pass_user_empty);
     }
   };
 

@@ -9,6 +9,7 @@ import {getUserById, updateUser} from '../../services/user.service.js';
 import {errorMessage} from '../../utils/snackbar';
 import {textStyle} from '../../mixin';
 import t from '../../localization';
+import {removeData} from '../../utils/storage';
 
 const styles = StyleSheet.create({
   title: {
@@ -16,6 +17,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginLeft: 27,
     marginBottom: 30,
+    textAlign: 'left',
   },
   container: {
     display: 'flex',
@@ -84,6 +86,11 @@ const Account = props => {
     }
   };
 
+  const signOut = async () => {
+    await removeData();
+    navigation.navigate('Home');
+  };
+
   return (
     <View>
       <Header
@@ -95,7 +102,7 @@ const Account = props => {
         isGoBack
         isAccount
         profilePhoto={fields.avatar}
-        arrowTop={'23%'}
+        arrowTop={'13%'}
         userId={params.userId}
       />
       <View style={styles.container}>
@@ -123,7 +130,18 @@ const Account = props => {
           />
         </View>
         <View style={{alignItems: 'center', marginTop: 45}}>
-          <Button text={t.gem} theme={colors} onPress={submit} testID={'submit_test'}/>
+          <Button
+            text={t.gem}
+            theme={colors}
+            onPress={submit}
+            testID={'submit_test'}
+          />
+          <Button
+            text={t.log_ud}
+            theme={colors}
+            onPress={signOut}
+            testID={'signout_test'}
+          />
         </View>
       </View>
     </View>

@@ -64,7 +64,7 @@ const GuestModal = ({visible, onClose, theme}) => {
         <View style={{alignSelf: 'center', marginBottom: 25}}>
           <Button
             theme={theme}
-            text={'Opret bruger'}
+            text={t.opret_bruger}
             onPress={() => goToLoginScreen(true)}
           />
         </View>

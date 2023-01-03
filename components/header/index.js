@@ -62,7 +62,7 @@ const Header = ({
             <View
               style={{
                 position: 'absolute',
-                top: '23%',
+                top: '13%',
                 alignSelf: 'center',
               }}>
               <Profile profilePhoto={profilePhoto} height={100} width={100} />
@@ -75,7 +75,7 @@ const Header = ({
             <View
               style={{
                 position: 'absolute',
-                top: '8%',
+                top: '10%',
                 right: '7%',
                 alignSelf: 'flex-end',
               }}>
@@ -86,7 +86,7 @@ const Header = ({
             <View
               style={{
                 position: 'absolute',
-                top: '20%',
+                top: '22%',
                 alignSelf: 'center',
               }}>
               <Filter theme={theme} handlerFilters={handlerFilters} filters={filters}/>

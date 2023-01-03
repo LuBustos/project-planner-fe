@@ -27,6 +27,7 @@ const styles_filter = StyleSheet.create({
     padding: 20,
     marginTop: 160,
     marginLeft: 20,
+    alignSelf: 'center'
   },
   title: {
     ...textStyle('600', 20, 30),

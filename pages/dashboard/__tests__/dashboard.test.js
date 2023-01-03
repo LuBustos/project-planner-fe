@@ -12,16 +12,22 @@ const props = {
 };
 
 const mockOpenCreateOrUpdateTask = jest.fn();
+const mockOpenReminderTask = jest.fn();
 
 jest.mock('../../../hooks/useDashboard', () => ({
   __esModule: true,
   default: props => ({
     ...props,
     openCreateOrUpdateTask: () => mockOpenCreateOrUpdateTask(),
+    handlerOpenReminderModal: () => mockOpenReminderTask(),
     open: {
       open: true,
     },
+    openReminderModal: {
+      open: true
+    },
     tasks: [],
+    saveTasks: jest.fn(),
     handlerFilters: jest.fn(),
   }),
 }));

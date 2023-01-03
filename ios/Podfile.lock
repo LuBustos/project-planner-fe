@@ -380,6 +380,8 @@ PODS:
     - React-perflogger (= 0.70.6)
   - ReactNativeLocalization (2.3.1):
     - React-Core
+  - RNCAsyncStorage (1.17.11):
+    - React-Core
   - RNNotifee (7.3.0):
     - React-Core
     - RNNotifee/NotifeeCore (= 7.3.0)
@@ -462,6 +464,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeLocalization (from `../node_modules/react-native-localization`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSnackbar (from `../node_modules/react-native-snackbar`)
@@ -562,6 +565,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeLocalization:
     :path: "../node_modules/react-native-localization"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-async-storage/async-storage"
   RNNotifee:
     :path: "../node_modules/@notifee/react-native"
   RNScreens:
@@ -626,6 +631,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 15437b576139df27635400de0599d9844f1ab817
   ReactCommon: 349be31adeecffc7986a0de875d7fb0dcf4e251c
   ReactNativeLocalization: 076497d7ca70341c751cd3b3e7c86187332a182d
+  RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNNotifee: d585266dd69e1f355d26d074cbfdbdfa6c94b7d5
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
   RNSnackbar: be3333a21a453ccc272f41a8add5a71f7d44dfcd
