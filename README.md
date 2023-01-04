@@ -1,10 +1,10 @@
 # project-planner-fe
 
-# Technologies
+## Technologies
 Project-planner-fe is created with:
 * react-native: 0.70.6
 
-# Setup
+## Setup
 To run this project, install it locally using npm or yarn:
 
 First of all you have to create a .env or rename the .env.example file, and complete the next fields 
@@ -14,21 +14,21 @@ URL_BACKEND = 'http://localhost:3001/api'
 
 When you run the BE, the port that you will get by default is 3001
 
-# Step by Step
+## Step by Step
 Before starting you have to run:
 
 ``` 
 1. npm install / yarn install.
 ```
 
-## Android
+### Android
 
 ```
 $ cd android
 $ npm android / yarn android 
 ```
 
-## ios
+### ios
 
 ````
 $ cd ios
@@ -36,7 +36,7 @@ $ pod install
 $ npm ios / yarn ios
 ````
 
-# Test
+## Test
 
 If you want to run the local tests and see the coverage, use:
 
