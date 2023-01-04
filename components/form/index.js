@@ -46,7 +46,7 @@ const stylesForm = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 15,
     width: 341,
-    marginBottom: 10,
+    marginBottom: 23,
     paddingLeft: 10,
     paddingBottom: 5,
   },
@@ -57,6 +57,7 @@ const stylesForm = StyleSheet.create({
     ...textStyle('600', 15, 22),
     color: '#F2994A',
     margin: 5,
+    marginLeft: 10
   },
   item: {
     margin: 5,

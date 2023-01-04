@@ -1,6 +1,7 @@
 import axios from 'axios';
+import Config from "react-native-config";
 
-const local = 'http://localhost:3001/api';
+const local = Config.URL_BACKEND;
 
 export const getTask = async (id,body) => {
   try {

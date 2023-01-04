@@ -1,8 +1,27 @@
-import {Text, TouchableOpacity, View} from 'react-native';
-import styles from '../../styles.js';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome.js';
 import {TagLabel} from '../form/tags/index.js';
 import t from '../../localization/index.js';
+import {boxShadow, textStyle} from '../../mixin.js';
+
+const styles = StyleSheet.create({
+  cards: {
+    backgroundColor: '#FFFFFF',
+    ...boxShadow(4, 4),
+    borderRadius: 10,
+    width: 336,
+    height: 70,
+    margin: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  textCards: {
+    ...textStyle('500', 13, 20),
+    letterSpacing: 1,
+    padding: 10,
+  },
+});
 
 const TextBox = ({
   children,

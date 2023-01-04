@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 40,
+    width: 356.5
   },
 });
 

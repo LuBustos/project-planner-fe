@@ -13,6 +13,7 @@ const themes = [
     color: '#fff3e3',
     buttonColor: '#67a9ef',
     text: '#FFFFFF',
+    iconColor: '#67A9EF'
   },
   {
     id: 2,
@@ -20,6 +21,7 @@ const themes = [
     color: '#F7F2BD',
     buttonColor: '#F0D773',
     text: '#FFFFFF',
+    iconColor: '#67A9EF'
   },
   {
     id: 3,
@@ -27,6 +29,7 @@ const themes = [
     color: '#67a9ef',
     buttonColor: '#fff3e3',
     text: 'black',
+    iconColor: '#fff3e3'
   },
 ];
 

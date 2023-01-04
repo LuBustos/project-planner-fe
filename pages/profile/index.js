@@ -1,4 +1,4 @@
-import {Image, Platform, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Header from '../../components/header';
 import {Button} from '../../components';
 import styles from '../../styles.js';
@@ -10,6 +10,16 @@ import Camera from '../../assets/camera';
 import {useImages} from '../../hooks';
 import {getUserById, updateAvatar} from '../../services/user.service';
 import t from '../../localization';
+import { textStyle } from '../../mixin';
+
+
+const profileStyles = StyleSheet.create({
+  icon_text: {
+    ...textStyle('400', 14, 21),
+    letterSpacing: 1,
+    color: '#67A9EF',
+  },
+});
 
 const CreateProfile = props => {
   const {
@@ -126,7 +136,7 @@ const CreateProfile = props => {
           />
           <Text
             style={{
-              ...styles.icon_text,
+              ...profileStyles.icon_text,
               color: colors.textImage,
             }}>
             {t.kamera}
@@ -140,7 +150,7 @@ const CreateProfile = props => {
           />
           <Text
             style={{
-              ...styles.icon_text,
+              ...profileStyles.icon_text,
               color: colors.textImage,
             }}>
             {t.upload}

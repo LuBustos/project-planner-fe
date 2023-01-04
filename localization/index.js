@@ -1,4 +1,4 @@
-import { NativeModules, Platform } from 'react-native';
+import {NativeModules, Platform} from 'react-native';
 import LocalizedStrings from 'react-native-localization';
 
 let t = new LocalizedStrings({
@@ -48,7 +48,9 @@ let t = new LocalizedStrings({
     overdue: 'forsinket',
     complete_dashboard_title: 'Godt klaret!',
     complete_dashboard_desc: 'Du har ikke flere opgaver',
-    log_ud: 'Log ud'
+    log_ud: 'Log ud',
+    account_updated: 'Brugernavn og adgangskode blev opdateret',
+    account_not_updated: 'Adgangskode eller brugernavn er tomt',
   },
   en_US: {
     opret_bruger: 'Create account',
@@ -89,7 +91,7 @@ let t = new LocalizedStrings({
     afleveringsdato: 'Due date',
     overdue_tasks: 'You have overdue tasks',
     you_have: 'You have',
-    overdue_to_complete:'overdue tasks to complete',
+    overdue_to_complete: 'overdue tasks to complete',
     reminder_saved: 'The reminder was saved',
     reminder: 'Reminder',
     pass_user_empty: 'Password or username empty',
@@ -97,7 +99,9 @@ let t = new LocalizedStrings({
     overdue: 'overdue',
     complete_dashboard_title: 'Well done!',
     complete_dashboard_desc: 'You have no more tasks',
-    log_ud: 'Sign out'
+    log_ud: 'Sign out',
+    account_updated: 'Username and password was updated',
+    account_not_updated: 'Password or username empty',
   },
 });
 

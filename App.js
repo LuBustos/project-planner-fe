@@ -28,6 +28,7 @@ const themes = {
       backgroundInput: '#FFFFFF',
       colorInputText: 'black',
       textImage: 'black',
+      iconColor: '#fff3e3',
     },
   },
   yellowish: {
@@ -38,6 +39,7 @@ const themes = {
       backgroundInput: '#FFFFFF',
       colorInputText: 'black',
       textImage: '#67A9EF',
+      iconColor: '#67A9EF',
     },
   },
   light: {
@@ -48,6 +50,7 @@ const themes = {
       backgroundInput: '#FFFFFF',
       colorInputText: 'black',
       textImage: '#67A9EF',
+      iconColor: '#67A9EF',
     },
   },
 };

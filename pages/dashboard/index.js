@@ -15,19 +15,31 @@ import t from '../../localization';
 import {useDashboard} from '../../hooks';
 import {onDisplayNotification} from '../../utils/notify';
 import ReminderModal from '../../components/modal/reminder';
-import { getData } from '../../utils/storage';
+import {getData} from '../../utils/storage';
 import CompleteAllTaskMessage from '../../components/complete';
 
 const styles = StyleSheet.create({
   title: {
     ...textStyle('600', 18, 27),
     letterSpacing: 1,
-    marginLeft: 27,
-    marginBottom: 23,
+    marginLeft: 5,
+    marginBottom: 13,
   },
 });
 
 const COMPLETED = 2;
+
+const ListEmptyComponent = ({user}) => {
+  if (!user) {
+    return <EmptyMessage />;
+  }
+
+  if (user.isFirstTime) {
+    return <EmptyMessage />;
+  }
+
+  return <CompleteAllTaskMessage />;
+};
 
 const Dashboard = props => {
   const {
@@ -53,7 +65,7 @@ const Dashboard = props => {
     closeReminderModal,
     openReminderModal,
   } = useDashboard();
-  const [user,setUser] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (!params.userId) {
@@ -62,7 +74,9 @@ const Dashboard = props => {
   }, []);
 
   useEffect(() => {
-    getProfile(params.userId);
+    if (params.userId) {
+      getProfile(params.userId);
+    }
   }, [uri]);
 
   useEffect(() => {
@@ -71,14 +85,16 @@ const Dashboard = props => {
         getAllTask(params.userId, filterOptions),
         getProfile(params.userId),
       );
-      getDataFromStorage()
+      getDataFromStorage();
     }
   }, [refresh, filterOptions]);
 
   const getDataFromStorage = async () => {
     const data = await getData();
-    setUser(data);
-  }
+    if (data) {
+      setUser(data);
+    }
+  };
 
   const getAllTask = async id => {
     try {
@@ -127,7 +143,7 @@ const Dashboard = props => {
         refreshScreen={refreshScreen}
         filters={filterOptions}
       />
-      <View style={{flex: 1, marginTop: -250,alignSelf: 'center'}}>
+      <View style={{flex: 1, marginTop: -250,alignSelf:'center'}}>
         <FlatList
           testID="flatlist_test"
           data={tasks}
@@ -141,9 +157,7 @@ const Dashboard = props => {
             </TextBox>
           )} //Call box
           keyExtractor={item => item.id}
-          ListEmptyComponent={() => {
-            return user?.isFirstTime ? <EmptyMessage /> : <CompleteAllTaskMessage />; //Call empty message
-          }}
+          ListEmptyComponent={() => <ListEmptyComponent user={user} />}
           ListHeaderComponent={() => {
             return tasks.length > 0 ? (
               <Text style={{...styles.title, color: colors.backgroundButton}}>
@@ -159,7 +173,7 @@ const Dashboard = props => {
             name={'plus-circle'}
             style={{
               position: 'absolute',
-              color: '#67A9EF',
+              color: colors.iconColor,
               top: -110,
               left: '75%',
               zIndex: 10,

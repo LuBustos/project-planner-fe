@@ -1,6 +1,7 @@
 import axios from 'axios';
+import Config from "react-native-config";
 
-const local = 'http://localhost:3001/api';
+const local = Config.URL_BACKEND;
 
 export const getUserById = async id => {
   try {
@@ -11,7 +12,8 @@ export const getUserById = async id => {
     }
     return {success: false, message: 'Ops!'};
   } catch (error) {
-    return error.response.data;
+    console.log(error)
+    return error.response?.data;
   }
 };
 

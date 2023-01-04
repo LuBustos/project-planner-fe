@@ -1,10 +1,24 @@
-import {View, Text, TouchableOpacity} from 'react-native';
-import Wave from '../../assets/Wave';
+import { useTheme } from '@react-navigation/native';
+import { StyleSheet, Text, View } from 'react-native';
 import SocialMedia from '../../assets/Social Media';
+import Wave from '../../assets/Wave';
+import { Button } from '../../components/index';
+import t from '../../localization/index';
 import styles from '../../styles.js';
-import {useTheme} from '@react-navigation/native';
-import {Button} from '../../components/index'
-import t from '../../localization/index'
+import { textStyle } from '../../mixin';
+
+'use strict';
+
+const homeStyles = StyleSheet.create({
+  mainTitle: {
+    position: 'absolute',
+    left: '10%',
+    top: '13.86%',
+    ...textStyle('600', 18, 27),
+    alignSelf: 'center'
+  },
+});
+
 
 
 const Home = props => {
@@ -26,7 +40,7 @@ const Home = props => {
           top: -10,
         }}
       />
-      <Text style={{...styles.subtitle, color: colors.text}}>Littlegiants</Text>
+      <Text style={{...homeStyles.mainTitle, color: colors.text}}>Littlegiants</Text>
       <Text style={{...styles.title, color: colors.text}}>Project planner</Text>
       <SocialMedia
         style={{

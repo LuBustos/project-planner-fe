@@ -25,8 +25,8 @@ const styles_filter = StyleSheet.create({
     width: 351,
     height: 441,
     padding: 20,
-    marginTop: 160,
-    marginLeft: 20,
+    marginTop: "40%",
+    // marginLeft: "5%",
     alignSelf: 'center'
   },
   title: {
@@ -40,6 +40,11 @@ const styles_filter = StyleSheet.create({
     ...textStyle('400', 20, 30),
     textAlign: 'left',
     marginLeft: 10,
+  },
+  placeholder_text: {
+    fontStyle: 'normal',
+    ...textStyle('300', 14, 21),
+    letterSpacing: 1,
   },
 });
 
@@ -161,7 +166,6 @@ const Filter = ({theme, handlerFilters,filters}) => {
           color: theme.colorInputText,
           backgroundColor: theme.backgroundInput,
           paddingLeft: 40,
-          paddingBottom: 5,
           alignSelf: 'center',
           width: 336,
           height: 43,

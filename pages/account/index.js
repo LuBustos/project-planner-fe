@@ -6,7 +6,7 @@ import Header from '../../components/header';
 import Input from '../../components/input';
 import {useFields} from '../../hooks';
 import {getUserById, updateUser} from '../../services/user.service.js';
-import {errorMessage} from '../../utils/snackbar';
+import {errorMessage, successMessage} from '../../utils/snackbar';
 import {textStyle} from '../../mixin';
 import t from '../../localization';
 import {removeData} from '../../utils/storage';
@@ -15,14 +15,13 @@ const styles = StyleSheet.create({
   title: {
     ...textStyle('600', 18, 27),
     letterSpacing: 1,
-    marginLeft: 27,
     marginBottom: 30,
-    textAlign: 'left',
   },
   container: {
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
+    alignSelf: 'center'
   },
   form: {
     alignSelf: 'center',
@@ -80,9 +79,10 @@ const Account = props => {
         navigation.navigate('Dashboard', {
           userId: params.userId,
         });
+        successMessage(t.account_updated);
       }
     } else {
-      errorMessage('Password or username empty');
+      errorMessage(t.account_not_updated);
     }
   };
 
