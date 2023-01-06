@@ -9,6 +9,7 @@ export const InputForm = ({label, value, onChange, name,styles}) => {
         style={{...styles.input, height: 52}}
         placeholder={label}
         value={value}
+        testID={'input_test'}
       />
     </View>
   );
@@ -25,6 +26,7 @@ export const InputMultilineForm = ({label, value, onChange, name,styles}) => {
         numberOfLines={4}
         onChangeText={text => onChange(name, text)}
         value={value}
+        testID={'input_multiline_test'}
       />
     </View>
   );

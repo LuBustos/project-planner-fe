@@ -131,6 +131,7 @@ const Form = ({
     if (response.success) {
       const userList = response.data.map(user => {
         let user_obj = {
+          key: user.id,
           label: user.id === owner ? 'Mig' : user.label,
           value: user.value,
           icon: () =>
@@ -332,6 +333,7 @@ const Form = ({
             onPress={submit}
             text={update ? t.gem : t.opret}
             theme={theme}
+            testID={'submit_test'}
           />
         </View>
       </View>
