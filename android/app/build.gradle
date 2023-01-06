@@ -1,4 +1,8 @@
 apply plugin: "com.android.application"
+// 2nd line, add a new apply:
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
 
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
@@ -83,6 +87,10 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+
+project.ext.vectoricons = [
+    iconFontNames: [ 'FontAwesome5_Brands.ttf' ] // Name of the font files you want to copy
+]
 
 /**
  * Set this to true to create two separate APKs instead of one:

@@ -1,6 +1,17 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
+
+const formatDate = value => {
+  const date = new Date(value);
+  return (
+    date.getDate() +
+    '-' +
+    parseInt(date.getMonth() + 1) +
+    '-' +
+    date.getFullYear()
+  );
+};
 
 const DatePickerField = ({
   label,
@@ -16,33 +27,22 @@ const DatePickerField = ({
 
   const onConfirmModal = date => {
     setOpen(false);
-    const formatDate =
-      date.getDate() +
-      '-' +
-      parseInt(date.getMonth() + 1) +
-      '-' +
-      date.getFullYear();
-
-    if (mode !== 'date') {
-      onChange(name, date);
-    } else {
-      onChange(name, formatDate);
-    }
+    onChange(name, date);
   };
 
   return (
     <View style={{height: value ? 90 : 70}}>
       {value ? <Text style={styles.label}>{label}</Text> : null}
       <TouchableOpacity
-        style={{...styles.input, height: 52, padding: 10}}
+        style={{...styles.input, height: 52}}
         onPress={() => setOpen(true)}>
         <TextInput
-          style={{...styles.textDate}}
+          style={{...styles.textDate,paddingTop: 12}}
           value={
             value
               ? mode != 'date'
                 ? new Date(value).toLocaleTimeString()
-                : value
+                : formatDate(value)
               : null
           }
           editable={false}
@@ -52,13 +52,13 @@ const DatePickerField = ({
       </TouchableOpacity>
       <DatePicker
         modal
-        date={value ? new Date(value) : new Date(today)}
+        date={value ? new Date(value) : today}
         mode={mode}
         open={open}
         onConfirm={date => onConfirmModal(date)}
-        minimumDate={new Date(today)}
+        minimumDate={today}
         placeholder="select date"
-        format="DD/MM/YYYY"
+        format="DD-MM-YYYY"
         onCancel={() => {
           setOpen(false);
         }}

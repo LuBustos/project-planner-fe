@@ -33,6 +33,7 @@ const SelectForm = ({
         setItems={setUsers}
         multiple={true}
         mode={'BADGE'}
+        listMode={"SCROLLVIEW"}
         autoScroll={true}
         renderBadgeItem={props => {
           const {IconComponent, label, value} = props;

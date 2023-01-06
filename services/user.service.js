@@ -1,7 +1,10 @@
 import axios from 'axios';
+import { Platform } from 'react-native';
 import Config from "react-native-config";
 
-const local = Config.URL_BACKEND;
+console.log(Config)
+
+const local = Platform.OS === "ios" ? Config.URL_BACKEND_IOS : Config.URL_BACKEND_ANDROID;
 
 export const getUserById = async id => {
   try {
@@ -12,7 +15,7 @@ export const getUserById = async id => {
     }
     return {success: false, message: 'Ops!'};
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return error.response?.data;
   }
 };
@@ -39,7 +42,11 @@ export const createUser = async body => {
 export const updateUser = async (userId, body) => {
   try {
     const url = `${local}/update-user?id=${userId}`;
-    const response = await axios.put(url, {...body});
+    const updatePassword = body.password.length > 0 ? true : false;
+    const response = await axios.put(url, {
+      ...body,
+      updatePassword: updatePassword,
+    });
     if (response.status === 200) {
       return response.data;
     }
@@ -84,6 +91,11 @@ export const login = async body => {
     }
     return {success: false, message: 'Ops!'};
   } catch (error) {
-    return error.response.data;
+    console.log(error);
+    if (error.response) {
+      return error.response.data;
+    }
+
+    return {succces: false, message: error};
   }
 };

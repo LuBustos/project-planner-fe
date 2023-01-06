@@ -92,6 +92,7 @@ const Tags = ({label, value, styles, onChange, name}) => {
         style={{
           ...styles.input,
           height: 52,
+          paddingTop: 5,
           marginBottom: value.length > 0 ? 0 : 10,
         }}
         placeholder={label}

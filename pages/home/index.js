@@ -1,5 +1,5 @@
 import { useTheme } from '@react-navigation/native';
-import { StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import SocialMedia from '../../assets/Social Media';
 import Wave from '../../assets/Wave';
 import { Button } from '../../components/index';
@@ -37,7 +37,7 @@ const Home = props => {
       <Wave
         style={{
           left: -75,
-          top: -10,
+          top:  Platform.OS === "ios" ? -10 : -60,
         }}
       />
       <Text style={{...homeStyles.mainTitle, color: colors.text}}>Littlegiants</Text>

@@ -32,6 +32,10 @@ const styles = StyleSheet.create({
     letterSpacing: 4,
     alignSelf: 'center',
   },
+  header: {
+    left: -55,
+    top: -150,
+  },
 });
 
 module.exports = styles;

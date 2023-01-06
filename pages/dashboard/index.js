@@ -1,4 +1,12 @@
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Header from '../../components/header';
 import {useTheme} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
@@ -131,9 +139,9 @@ const Dashboard = props => {
       <Header
         header_style={{
           left: -55,
-          top: -120,
+          top: Platform.OS === 'ios' ? -120 : -150,
         }}
-        height="65%"
+        height={Platform.OS === 'ios' ? "65%" : "70%"}
         isFilter
         theme={colors}
         isProfile
@@ -143,29 +151,36 @@ const Dashboard = props => {
         refreshScreen={refreshScreen}
         filters={filterOptions}
       />
-      <View style={{flex: 1, marginTop: -250,alignSelf:'center'}}>
-        <FlatList
-          testID="flatlist_test"
-          data={tasks}
-          renderItem={({item}) => (
-            <TextBox
-              onPress={() => openCreateOrUpdateTask(true, item.id)}
-              onCompleteTask={() => completeTask(item.id)}
-              overdue={item.overdue}
-              onReminderTask={() => handlerOpenReminderModal(item)}>
-              {item.title}
-            </TextBox>
-          )} //Call box
-          keyExtractor={item => item.id}
-          ListEmptyComponent={() => <ListEmptyComponent user={user} />}
-          ListHeaderComponent={() => {
-            return tasks.length > 0 ? (
-              <Text style={{...styles.title, color: colors.backgroundButton}}>
-                {t.mine_opgaver}
-              </Text>
-            ) : null;
-          }}
-        />
+      <View style={{flex: 1, marginTop: -250, alignSelf: 'center'}}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS == 'ios' ? 0 : 20}
+          enabled={true}
+          style={{flex: 1}}>
+          <FlatList
+            testID="flatlist_test"
+            data={tasks}
+            renderItem={({item}) => (
+              <TextBox
+                onPress={() => openCreateOrUpdateTask(true, item.id)}
+                onCompleteTask={() => completeTask(item.id)}
+                overdue={item.overdue}
+                status={item.status_id}
+                onReminderTask={() => handlerOpenReminderModal(item)}>
+                {item.title}
+              </TextBox>
+            )} //Call box
+            keyExtractor={item => item.id}
+            ListEmptyComponent={() => <ListEmptyComponent user={user} />}
+            ListHeaderComponent={() => {
+              return tasks.length > 0 ? (
+                <Text style={{...styles.title, color: colors.backgroundButton}}>
+                  {t.mine_opgaver}
+                </Text>
+              ) : null;
+            }}
+          />
+        </KeyboardAvoidingView>
         <TouchableOpacity
           onPress={() => openCreateOrUpdateTask(false)}
           testID="add_icon_test">

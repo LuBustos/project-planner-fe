@@ -65,10 +65,10 @@ const Account = props => {
 
   const validation = () => {
     const {username, password} = fields;
-    if (!isEmpty(username) && !isEmpty(password)) {
+    if (!isEmpty(username)) {
       return true;
     }
-
+    
     return false;
   };
 

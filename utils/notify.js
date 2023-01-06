@@ -10,13 +10,18 @@ export async function onCreateTriggerNotification(reminder, fields) {
       timestamp: date.getTime(), // fire at 11:10am (10 minutes before meeting)
     };
 
+    const channelId = await notifee.createChannel({
+      id: 'android-id',
+      name: 'android-channel-test',
+    });
+
     // Create a trigger notification
    const response =  await notifee.createTriggerNotification(
       {
         title: fields.title,
         body: fields.description,
         android: {
-          channelId: 'your-channel-id',
+          channelId
         },
       },
       trigger,
@@ -42,13 +47,16 @@ export async function onDisplayNotification(title,message) {
 
   // Create a channel (required for Android)
   const channelId = await notifee.createChannel({
-    id: 'default',
-    name: 'Default Channel',
+    id: 'android-id',
+    name: 'android-channel-test',
   });
 
   notifee.displayNotification({
     title: title,
     body: message,
+    android: {
+      channelId
+    },
   });
 
 

@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 function boxShadow(height = 5, elevation = 5, shadowOpacity = 0.25) {
   return {
@@ -10,6 +10,14 @@ function boxShadow(height = 5, elevation = 5, shadowOpacity = 0.25) {
     shadowOpacity: shadowOpacity,
     shadowRadius: 3.05,
     elevation: elevation,
+  };
+}
+
+function headerComponents(top, alignSelf = 'center') {
+  return {
+    position: 'absolute',
+    top: top,
+    alignSelf: alignSelf,
   };
 }
 
@@ -25,4 +33,5 @@ function textStyle(fontWeight, fontSize, lineHeight) {
 module.exports = {
   textStyle,
   boxShadow,
+  headerComponents
 };

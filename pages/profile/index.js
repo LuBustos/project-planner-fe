@@ -28,7 +28,6 @@ const CreateProfile = props => {
   } = props;
   const {colors} = useTheme();
   const {
-    imageCamera,
     imageGallery,
     openCamera,
     openGallery,

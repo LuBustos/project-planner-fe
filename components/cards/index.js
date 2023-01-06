@@ -4,6 +4,8 @@ import {TagLabel} from '../form/tags/index.js';
 import t from '../../localization/index.js';
 import {boxShadow, textStyle} from '../../mixin.js';
 
+const COMPLETED = 2;
+
 const styles = StyleSheet.create({
   cards: {
     backgroundColor: '#FFFFFF',
@@ -28,6 +30,7 @@ const TextBox = ({
   onCompleteTask,
   onReminderTask,
   overdue,
+  status,
   ...props
 }) => {
   return (
@@ -41,7 +44,7 @@ const TextBox = ({
         ) : (
           <Text style={{...styles.textCards}}>{children}</Text>
         )}
-        <View
+        {status !== COMPLETED ? <View
           style={{
             display: 'flex',
             flexDirection: 'row',
@@ -69,7 +72,7 @@ const TextBox = ({
               size={20}
             />
           </TouchableOpacity>
-        </View>
+        </View> : null}
       </View>
     </TouchableOpacity>
   );

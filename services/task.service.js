@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { Platform } from 'react-native';
 import Config from "react-native-config";
 
-const local = Config.URL_BACKEND;
+const local = Platform.OS === "ios" ? Config.URL_BACKEND_IOS : Config.URL_BACKEND_ANDROID;
 
 export const getTask = async (id,body) => {
   try {

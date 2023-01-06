@@ -30,14 +30,7 @@ function useImages() {
         maxWidth: 200,
       });
 
-      if (result) {
-        const {uri, fileName} = result.assets[0];
-
-        setImageCamera({
-          fileName: fileName,
-          fileUri: uri,
-        });
-      }
+      handleImageGallery(result.assets[0]);
     } catch (error) {
       console.log(error);
     }
