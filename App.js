@@ -23,7 +23,7 @@ const themes = {
   ocean: {
     colors: {
       backgroundButton: '#fff3e3',
-      background: '#67a9ef', //backgraound of each screen
+      background: '#67a9ef',
       text: 'black',
       backgroundInput: '#FFFFFF',
       colorInputText: 'black',
@@ -34,7 +34,7 @@ const themes = {
   yellowish: {
     colors: {
       backgroundButton: '#F0D773',
-      background: '#F7F2BD', //backgraound of each screen
+      background: '#F7F2BD',
       text: '#FFFFFF',
       backgroundInput: '#FFFFFF',
       colorInputText: 'black',
@@ -45,7 +45,7 @@ const themes = {
   light: {
     colors: {
       backgroundButton: '#67a9ef',
-      background: '#fff3e3', //backgraound of each screen
+      background: '#fff3e3',
       text: '#FFFFFF',
       backgroundInput: '#FFFFFF',
       colorInputText: 'black',

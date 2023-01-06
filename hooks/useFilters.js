@@ -16,7 +16,6 @@ function useFilters() {
     setOpen(false);
   };
 
-  //we have to add the debound
   const handlerFilterText = text => {
     setFilterMessage(text);
   };

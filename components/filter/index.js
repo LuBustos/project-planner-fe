@@ -26,7 +26,6 @@ const styles_filter = StyleSheet.create({
     height: 441,
     padding: 20,
     marginTop: "40%",
-    // marginLeft: "5%",
     alignSelf: 'center'
   },
   title: {

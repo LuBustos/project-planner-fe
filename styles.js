@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
   input: {
     width: 324,
     height: 50,
-    // backgroundColor: '#ffffff',
     ...boxShadow(),
     borderRadius: 20,
     margin: 10,

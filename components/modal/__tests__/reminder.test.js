@@ -1,4 +1,3 @@
-//Si aparece el test siendo usuario "GUEST"
 import {render} from '@testing-library/react-native';
 import ReminderModal from '../reminder';
 
