@@ -9,7 +9,8 @@ To run this project, install it locally using npm or yarn:
 
 First of all you have to create a .env or rename the .env.example file, and complete the next fields 
 ```
-URL_BACKEND = 'http://localhost:3001/api'
+URL_BACKEND_ANDROID=http://10.0.2.2:3001/api
+URL_BACKEND_IOS=http://localhost:3001/api
 ````
 
 When you run the BE, the port that you will get by default is 3001
